@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131d">
+<title>Codyssey Landing Page</title>
+
+<style>
+:root {
+    --bg: #10131d;
+    --surface: #191e2c;
+    --surface-hover: #222a3b;
+    --border: rgba(255,255,255,.09);
+    --text: #f3f5fa;
+    --muted: #929bad;
+    --accent: #8b83ff;
+    --accent-light: #aaa4ff;
+    --danger: #ff7070;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 50% -15%, rgba(105,92,255,.18), transparent 55%),
+        var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "Noto Sans KR", sans-serif;
+    overflow-x: hidden;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.container {
+    width: min(900px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 85px 0 55px;
+}
+
+/* Header */
+
+.header {
+    text-align: center;
+    margin-bottom: 55px;
+}
+
+.logo-mark {
+    width: 55px;
+    height: 55px;
+    margin: 0 auto 22px;
+    border-radius: 17px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #8b83ff, #6555df);
+    box-shadow: 0 8px 30px rgba(110,95,255,.3);
+    font-size: 29px;
+    font-weight: 800;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(27px, 5vw, 39px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.header p {
+    color: var(--muted);
+    font-size: 15px;
+    margin-top: 13px;
+    line-height: 1.7;
+}
+
+/* Section */
+
+.section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 17px;
+}
+
+.section-title h2 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+    color: #d9deea;
+}
+
+.section-title span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* Cards */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.site-card {
+    position: relative;
+    min-width: 0;
+    min-height: 145px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px 12px;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    transition: transform .2s, background .2s, border-color .2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.site-card:hover {
+    transform: translateY(-4px);
+    background: var(--surface-hover);
+    border-color: rgba(139,131,255,.5);
+}
+
+.site-card:active {
+    transform: scale(.97);
+}
+
+.site-icon {
+    width: 47px;
+    height: 47px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: rgba(255,255,255,.07);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.site-icon img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.site-icon .fallback {
+    display: none;
+    font-size: 27px;
+    line-height: 1;
+}
+
+.site-name {
+    font-size: 15px;
+    font-weight: 650;
+    text-align: center;
+    word-break: break-word;
+}
+
+.custom-card {
+    padding-bottom: 23px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 9px;
+    width: 25px;
+    height: 25px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,.07);
+    color: #aab2c1;
+    font-size: 17px;
+    line-height: 1;
+    opacity: .7;
+    z-index: 2;
+}
+
+.delete-btn:hover {
+    background: rgba(255,90,90,.2);
+    color: var(--danger);
+}
+
+/* Email */
+
+.email-card {
+    margin-top: 15px;
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 17px 22px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: rgba(139,131,255,.07);
+    text-decoration: none;
+    color: var(--text);
+    transition: background .2s;
+}
+
+.email-card:hover {
+    background: rgba(139,131,255,.14);
+}
+
+.email-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(139,131,255,.18);
+    font-size: 21px;
+    flex-shrink: 0;
+}
+
+.email-info {
+    min-width: 0;
+}
+
+.email-info strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.email-info small {
+    color: var(--muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.email-arrow {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 20px;
+}
+
+/* Add site */
+
+.add-section {
+    margin-top: 42px;
+}
+
+.add-button {
+    width: 100%;
+    padding: 16px;
+    border: 1px dashed rgba(139,131,255,.5);
+    border-radius: 14px;
+    background: rgba(139,131,255,.05);
+    color: var(--accent-light);
+    font-size: 14px;
+    font-weight: 650;
+    transition: background .2s;
+}
+
+.add-button:hover {
+    background: rgba(139,131,255,.12);
+}
+
+.add-form {
+    display: none;
+    margin-top: 14px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--surface);
+}
+
+.add-form.visible {
+    display: block;
+}
+
+.add-form h3 {
+    margin: 0 0 20px;
+    font-size: 16px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #c7cede;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 14px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    outline: none;
+    background: #111622;
+    color: white;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    border-color: var(--accent);
+}
+
+.form-group input::placeholder {
+    color: #687185;
+}
+
+.form-message {
+    min-height: 20px;
+    margin: 5px 0 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--danger);
+}
+
+.form-message.success {
+    color: #70d9a0;
+}
+
+.form-actions {
+    display: flex;
+    gap: 9px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 12px;
+    border: 0;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.save-btn {
+    background: var(--accent);
+    color: white;
+}
+
+.cancel-btn {
+    background: rgba(255,255,255,.08);
+    color: #c7cede;
+}
+
+/* Footer */
+
+.footer {
+    margin-top: 60px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    color: #6f788b;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.notice {
+    margin-top: 10px;
+    padding: 10px 13px;
+    border-radius: 9px;
+    background: rgba(255,190,80,.09);
+    color: #e7bd78;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.notice:empty {
+    display: none;
+}
+
+/* Easter Egg */
+
+#poopRain {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    overflow: hidden;
+    pointer-events: none;
+    display: none;
+}
+
+#poopRain.active {
+    display: block;
+}
+
+.poop {
+    position: absolute;
+    top: -80px;
+    animation-name: poopFall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    will-change: transform;
+    user-select: none;
+    filter: drop-shadow(0 3px 4px rgba(0,0,0,.2));
+}
+
+@keyframes poopFall {
+    0% {
+        transform: translate3d(0, -10vh, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate3d(25px, 20vh, 0) rotate(90deg);
+    }
+
+    50% {
+        transform: translate3d(-20px, 50vh, 0) rotate(180deg);
+    }
+
+    75% {
+        transform: translate3d(25px, 80vh, 0) rotate(270deg);
+    }
+
+    100% {
+        transform: translate3d(-15px, 115vh, 0) rotate(360deg);
+    }
+}
+
+#poopMessage {
+    position: fixed;
+    z-index: 10000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(.7);
+    padding: 20px 28px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 20px;
+    background: rgba(25,30,44,.92);
+    color: white;
+    font-size: clamp(20px, 5vw, 32px);
+    font-weight: 800;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s, transform .3s;
+}
+
+#poopMessage.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+    .container {
+        width: calc(100% - 30px);
+        padding-top: 55px;
+    }
+
+    .header {
+        margin-bottom: 40px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 11px;
+    }
+
+    .site-card {
+        min-height: 125px;
+        border-radius: 14px;
+    }
+
+    .site-icon {
+        width: 43px;
+        height: 43px;
+    }
+
+    .site-icon img {
+        width: 27px;
+        height: 27px;
+    }
+
+    .add-section {
+        margin-top: 32px;
+    }
+
+    .footer {
+        margin-top: 45px;
+    }
+}
+
+@media (max-width: 340px) {
+    .container {
+        width: calc(100% - 22px);
+    }
+
+    .grid {
+        gap: 8px;
+    }
+
+    .site-card {
+        min-height: 115px;
+        padding: 14px 7px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .poop {
+        animation-duration: 3s !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-mark">C</div>
+        <h1 id="pageTitle">Codyssey Landing Page</h1>
+        <p>
+            필요한 학습 도구를 한곳에서.<br>
+            AI Native Learning Hub
+        </p>
+    </header>
+
+    <!-- Default Sites -->
+    <section>
+        <div class="section-title">
+            <h2>QUICK LINKS</h2>
+            <span>학습 필수 사이트</span>
+        </div>
+
+        <div class="grid" id="siteGrid">
+
+            <a class="site-card"
+               href="https://codyssey.kr"
+               target="_blank"
+               rel="noopener noreferrer">
+                <span class="site-icon">
+                    <img src="https://www.google.com/s2/favicons?domain=codyssey.kr&sz=128"
+                         alt="Codyssey"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <span class="fallback">🎓</span>
+                </span>
+                <span class="site-name">Codyssey</span>
+            </a>
+
+            <a class="site-card"
+               href="https://github.com"
+               target="_blank"
+               rel="noopener noreferrer">
+                <span class="site-icon">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg"
+                         alt="GitHub"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <span class="fallback">🐙</span>
+                </span>
+                <span class="site-name">GitHub</span>
+            </a>
+
+            <a class="site-card"
+               href="https://discord.com/app"
+               target="_blank"
+               rel="noopener noreferrer">
+                <span class="site-icon">
+                    <img src="https://cdn.simpleicons.org/discord/5865F2"
+                         alt="Discord"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <span class="fallback">💬</span>
+                </span>
+                <span class="site-name">Discord</span>
+            </a>
+
+            <a class="site-card"
+               href="https://chatgpt.com"
+               target="_blank"
+               rel="noopener noreferrer">
+                <span class="site-icon">
+                    <img src="https://cdn.simpleicons.org/openai/FFFFFF"
+                         alt="ChatGPT"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <span class="fallback">🤖</span>
+                </span>
+                <span class="site-name">ChatGPT</span>
+            </a>
+
+            <a class="site-card"
+               href="https://gemini.google.com"
+               target="_blank"
+               rel="noopener noreferrer">
+                <span class="site-icon">
+                    <img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128"
+                         alt="Gemini"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <span class="fallback">✨</span>
+                </span>
+                <span class="site-name">Gemini</span>
+            </a>
+
+            <a class="site-card"
+               href="https://claude.ai"
+               target="_blank"
+               rel="noopener noreferrer">
+                <span class="site-icon">
+                    <img src="https://cdn.simpleicons.org/claude/D97757"
+                         alt="Claude"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <span class="fallback">✳</span>
+                </span>
+                <span class="site-name">Claude</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- Email -->
+    <section>
+        <div class="section-title" style="margin-top:38px">
+            <h2>CONTACT</h2>
+            <span>운영진 문의</span>
+        </div>
+
+        <a class="email-card" href="mailto:qna@innoaca.kr"
+           id="emailLink">
+            <span class="email-icon">✉</span>
+            <span class="email-info">
+                <strong>운영진 문의하기</strong>
+                <small>qna@innoaca.kr</small>
+            </span>
+            <span class="email-arrow">↗</span>
+        </a>
+
+        <div class="notice" id="emailNotice" role="status"></div>
+    </section>
+
+    <!-- Custom Sites -->
+    <section class="add-section">
+
+        <div class="section-title">
+            <h2>MY LINKS</h2>
+            <span>나만의 사이트</span>
+        </div>
+
+        <div class="grid" id="customGrid"></div>
+
+        <button class="add-button" id="toggleForm">
+            ＋ 사이트 추가
+        </button>
+
+        <form class="add-form" id="addForm">
+
+            <h3>새로운 사이트 추가</h3>
+
+            <div class="form-group">
+                <label for="siteName">사이트 이름</label>
+                <input type="text" id="siteName"
+                       maxlength="20"
+                       placeholder="예: Notion"
+                       autocomplete="off"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="siteUrl">사이트 URL</label>
+                <input type="text" id="siteUrl"
+                       placeholder="예: notion.so"
+                       autocomplete="url"
+                       required>
+            </div>
+
+            <div class="form-message" id="formMessage"
+                 role="status" aria-live="polite"></div>
+
+            <div class="form-actions">
+                <button type="submit" class="save-btn">
+                    저장하기
+                </button>
+                <button type="button" class="cancel-btn"
+                        id="cancelForm">
+                    취소
+                </button>
+            </div>
+
+        </form>
+
+        <div class="notice" id="storageNotice" role="status"></div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div>Codyssey AI Native Learning Hub</div>
+        <div>All your learning tools, in one place.</div>
+    </footer>
+
+</main>
+
+<!-- Easter Egg Overlay -->
+<div id="poopRain" aria-hidden="true"></div>
+<div id="poopMessage" aria-live="polite">
+    💩 SURPRISE! 💩
+</div>
+
+<script>
+(() => {
+    "use strict";
+
+    const STORAGE_KEY = "codyssey_landing_custom_sites";
+
+    const grid = document.getElementById("customGrid");
+    const form = document.getElementById("addForm");
+    const toggleButton = document.getElementById("toggleForm");
+    const cancelButton = document.getElementById("cancelForm");
+    const nameInput = document.getElementById("siteName");
+    const urlInput = document.getElementById("siteUrl");
+    const message = document.getElementById("formMessage");
+    const storageNotice = document.getElementById("storageNotice");
+
+    let customSites = [];
+    let storageAvailable = true;
+
+    const DEFAULT_ICON = "🌐";
+
+    // --------------------------------
+    // Common functions
+    // --------------------------------
+
+    function createElement(tag, className, text) {
+        const element = document.createElement(tag);
+
+        if (className) {
+            element.className = className;
+        }
+
+        if (text !== undefined) {
+            element.textContent = text;
+        }
+
+        return element;
+    }
+
+    // --------------------------------
+    // URL validation
+    // --------------------------------
+
+    function normalizeUrl(value) {
+        let input = value.trim();
+
+        if (!input) {
+            throw new Error("URL을 입력해 주세요.");
+        }
+
+        if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(input)) {
+            input = "https://" + input;
+        }
+
+        let parsed;
+
+        try {
+            parsed = new URL(input);
+        } catch {
+            throw new Error("올바른 URL 형식이 아닙니다.");
+        }
+
+        if (!["http:", "https:"].includes(parsed.protocol)) {
+            throw new Error("http 또는 https 주소만 사용할 수 있습니다.");
+        }
+
+        if (!parsed.hostname ||
+            !parsed.hostname.includes(".") ||
+            /\s/.test(parsed.hostname)) {
+            throw new Error("올바른 사이트 주소를 입력해 주세요.");
+        }
+
+        if (parsed.username || parsed.password) {
+            throw new Error("로그인 정보가 포함된 URL은 사용할 수 없습니다.");
+        }
+
+        return parsed.href;
+    }
+
+    function getComparableUrl(value) {
+        const parsed = new URL(value);
+
+        parsed.hash = "";
+
+        if (parsed.pathname !== "/") {
+            parsed.pathname = parsed.pathname.replace(/\/+$/, "");
+        }
+
+        return parsed.href.toLowerCase();
+    }
+
+    // --------------------------------
+    // Local Storage
+    // --------------------------------
+
+    function saveSites() {
+        if (!storageAvailable) {
+            return false;
+        }
+
+        try {
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(customSites)
+            );
+
+            return true;
+
+        } catch {
+            storageAvailable = false;
+
+            storageNotice.textContent =
+                "저장소를 사용할 수 없어 이번 세션에서만 유지됩니다. 새로고침하면 추가한 사이트가 사라질 수 있습니다.";
+
+            return false;
+        }
+    }
+
+    function loadSites() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+
+            if (!saved) {
+                return [];
+            }
+
+            const parsed = JSON.parse(saved);
+
+            if (!Array.isArray(parsed)) {
+                throw new Error("Invalid storage data");
+            }
+
+            const result = [];
+            const seen = new Set();
+
+            parsed.forEach(site => {
+                if (!site ||
+                    typeof site.name !== "string" ||
+                    typeof site.url !== "string" ||
+                    site.name.trim().length === 0 ||
+                    site.name.trim().length > 20) {
+                    throw new Error("Invalid site data");
+                }
+
+                const normalized = normalizeUrl(site.url);
+                const comparable = getComparableUrl(normalized);
+
+                if (seen.has(comparable)) {
+                    return;
+                }
+
+                seen.add(comparable);
+
+                result.push({
+                    name: site.name.trim(),
+                    url: normalized
+                });
+            });
+
+            return result;
+
+        } catch {
+            storageNotice.textContent =
+                "저장된 데이터에 문제가 있어 기본 상태로 복구했습니다.";
+
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+            } catch {
+                storageAvailable = false;
+            }
+
+            return [];
+        }
+    }
+
+    // --------------------------------
+    // Custom site cards
+    // --------------------------------
+
+    function createSiteCard(site, index) {
+        const card = createElement("div", "site-card custom-card");
+
+        const link = createElement("a", "");
+
+        link.href = site.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+
+        Object.assign(link.style, {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "15px",
+            width: "100%",
+            height: "100%",
+            color: "inherit",
+            textDecoration: "none"
+        });
+
+        const iconBox = createElement("span", "site-icon");
+        const icon = createElement("span", "fallback", DEFAULT_ICON);
+
+        icon.style.display = "block";
+        iconBox.appendChild(icon);
+
+        const name = createElement("span", "site-name", site.name);
+
+        link.appendChild(iconBox);
+        link.appendChild(name);
+
+        const deleteButton = createElement("button", "delete-btn", "×");
+
+        deleteButton.type = "button";
+        deleteButton.setAttribute("aria-label", site.name + " 삭제");
+        deleteButton.title = "사이트 삭제";
+
+        deleteButton.addEventListener("click", event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (!confirm(`"${site.name}" 사이트를 삭제하시겠습니까?`)) {
+                return;
+            }
+
+            customSites.splice(index, 1);
+
+            saveSites();
+            renderSites();
+        });
+
+        card.appendChild(link);
+        card.appendChild(deleteButton);
+
+        return card;
+    }
+
+    function renderSites() {
+        grid.replaceChildren();
+
+        customSites.forEach((site, index) => {
+            grid.appendChild(createSiteCard(site, index));
+        });
+    }
+
+    // --------------------------------
+    // Add site form
+    // --------------------------------
+
+    toggleButton.addEventListener("click", () => {
+        form.classList.toggle("visible");
+
+        if (form.classList.contains("visible")) {
+            nameInput.focus();
+        }
+    });
+
+    function closeForm() {
+        form.classList.remove("visible");
+        form.reset();
+        message.textContent = "";
+        message.className = "form-message";
+    }
+
+    cancelButton.addEventListener("click", closeForm);
+
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+
+        message.textContent = "";
+        message.className = "form-message";
+
+        const name = nameInput.value.trim();
+
+        if (!name) {
+            message.textContent = "사이트 이름을 입력해 주세요.";
+            nameInput.focus();
+            return;
+        }
+
+        if (name.length > 20) {
+            message.textContent =
+                "사이트 이름은 최대 20자까지 입력할 수 있습니다.";
+            return;
+        }
+
+        let url;
+
+        try {
+            url = normalizeUrl(urlInput.value);
+        } catch (error) {
+            message.textContent = error.message;
+            urlInput.focus();
+            return;
+        }
+
+        const comparable = getComparableUrl(url);
+
+        const duplicated = customSites.some(site =>
+            getComparableUrl(site.url) === comparable
+        );
+
+        if (duplicated) {
+            message.textContent = "이미 추가된 사이트입니다.";
+            urlInput.focus();
+            return;
+        }
+
+        customSites.push({ name, url });
+
+        const saved = saveSites();
+
+        renderSites();
+
+        if (!saved) {
+            message.textContent =
+                "사이트가 추가되었습니다. 다만 이번 세션에서만 유지됩니다.";
+        } else {
+            message.textContent =
+                "사이트가 성공적으로 추가되었습니다.";
+            message.className = "form-message success";
+        }
+
+        form.reset();
+
+        setTimeout(closeForm, 900);
+    });
+
+    // --------------------------------
+    // Email
+    // --------------------------------
+
+    document.getElementById("emailLink").addEventListener("click", () => {
+        document.getElementById("emailNotice").textContent =
+            "메일 앱이 열리지 않는다면 qna@innoaca.kr 주소로 직접 문의해 주세요.";
+    });
+
+    // --------------------------------
+    // Easter Egg: Poop Rain
+    // --------------------------------
+
+    const title = document.getElementById("pageTitle");
+    const poopRain = document.getElementById("poopRain");
+    const poopMessage = document.getElementById("poopMessage");
+
+    let clickCount = 0;
+    let lastClickTime = 0;
+    let isRunning = false;
+
+    const REQUIRED_CLICKS = 7;
+    const CLICK_RESET_TIME = 2000;
+    const RAIN_DURATION = 7000;
+    const EMOJI_COUNT = 90;
+
+    title.addEventListener("click", () => {
+        const now = Date.now();
+
+        // 클릭 간격이 2초 이상이면 카운트 초기화
+        if (now - lastClickTime > CLICK_RESET_TIME) {
+            clickCount = 0;
+        }
+
+        lastClickTime = now;
+        clickCount++;
+
+        if (clickCount >= REQUIRED_CLICKS) {
+            clickCount = 0;
+            activateEasterEgg();
+        }
+    });
+
+    function activateEasterEgg() {
+        if (isRunning) {
+            return;
+        }
+
+        isRunning = true;
+
+        poopRain.replaceChildren();
+        poopRain.classList.add("active");
+
+        poopMessage.classList.add("show");
+
+        // 똥 이모지 생성
+        for (let i = 0; i < EMOJI_COUNT; i++) {
+            createPoop();
+        }
+
+        // 메시지 숨기기
+        setTimeout(() => {
+            poopMessage.classList.remove("show");
+        }, 2500);
+
+        // 애니메이션 종료
+        setTimeout(() => {
+            poopRain.classList.remove("active");
+            poopRain.replaceChildren();
+            isRunning = false;
+        }, RAIN_DURATION);
+    }
+
+    function createPoop() {
+        const poop = document.createElement("span");
+
+        poop.className = "poop";
+        poop.textContent = "💩";
+
+        const size = 20 + Math.random() * 35;
+        const duration = 2.5 + Math.random() * 4;
+        const delay = Math.random() * 5;
+        const left = Math.random() * 100;
+        const rotation = Math.random() * 360;
+
+        poop.style.left = left + "%";
+        poop.style.fontSize = size + "px";
+        poop.style.animationDuration = duration + "s";
+        poop.style.animationDelay = delay + "s";
+        poop.style.transform = `rotate(${rotation}deg)`;
+
+        poopRain.appendChild(poop);
+    }
+
+    // --------------------------------
+    // Initialize
+    // --------------------------------
+
+    customSites = loadSites();
+
+    renderSites();
+
+})();
+</script>
+
+</body>
+</html>
