@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화 티어리스트</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #171717;
+            color: #f5f5f5;
+            font-family: Arial, "Malgun Gothic", sans-serif;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #999;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .genre-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #252525;
+            border-radius: 12px;
+        }
+
+        .genre-navigation button {
+            background: #383838;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .genre-navigation button:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .genre-title {
+            text-align: center;
+        }
+
+        .genre-title h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .genre-count {
+            margin-top: 6px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .tier-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tier {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            min-height: 110px;
+            background: #252525;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .tier-label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            font-weight: bold;
+            color: #171717;
+        }
+
+        .tier-S .tier-label {
+            background: #ff6b6b;
+        }
+
+        .tier-A .tier-label {
+            background: #ffa94d;
+        }
+
+        .tier-B .tier-label {
+            background: #ffe066;
+        }
+
+        .tier-C .tier-label {
+            background: #69db7c;
+        }
+
+        .tier-D .tier-label {
+            background: #74c0fc;
+        }
+
+        .movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 10px;
+            padding: 14px;
+        }
+
+        .movie {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #383838;
+            border-radius: 8px;
+            padding: 9px 11px;
+            font-size: 13px;
+        }
+
+        .movie-title {
+            line-height: 1.4;
+        }
+
+        .movie-year {
+            color: #999;
+            font-size: 11px;
+        }
+
+        .movie select {
+            background: #252525;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 5px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .empty {
+            color: #777;
+            font-size: 13px;
+            align-self: center;
+        }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 14px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .genre-navigation {
+                padding: 12px 8px;
+            }
+
+            .genre-navigation button {
+                padding: 9px 11px;
+                font-size: 12px;
+            }
+
+            .genre-title h2 {
+                font-size: 19px;
+            }
+
+            .tier {
+                grid-template-columns: 48px 1fr;
+                min-height: 90px;
+            }
+
+            .tier-label {
+                font-size: 20px;
+            }
+
+            .movie-list {
+                padding: 9px;
+                gap: 7px;
+            }
+
+            .movie {
+                padding: 7px;
+                gap: 5px;
+                font-size: 12px;
+            }
+
+            .movie select {
+                padding: 4px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>🎬 영화 티어리스트</h1>
+                <div class="subtitle">
+                    나만의 영화 평가 컬렉션
+                </div>
+            </div>
+        </header>
+
+        <nav class="genre-navigation">
+            <button id="prevButton" onclick="changeGenre(-1)">
+                ← 이전 장르
+            </button>
+
+            <div class="genre-title">
+                <h2 id="genreName"></h2>
+                <div class="genre-count" id="genreCount"></div>
+            </div>
+
+            <button id="nextButton" onclick="changeGenre(1)">
+                다음 장르 →
+            </button>
+        </nav>
+
+        <main class="tier-list" id="tierList"></main>
+
+        <div class="footer">
+            평가 결과는 현재 브라우저에 자동 저장됩니다.
+        </div>
+    </div>
+
+    <script>
+        // 영화 데이터
+        // genres 배열에 여러 장르를 지정할 수 있습니다.
+        const movies = [
+            {
+                id: 1,
+                title: "쇼생크 탈출",
+                year: 1994,
+                genres: ["드라마"]
+            },
+            {
+                id: 2,
+                title: "대부",
+                year: 1972,
+                genres: ["드라마", "범죄"]
+            },
+            {
+                id: 3,
+                title: "다크 나이트",
+                year: 2008,
+                genres: ["액션", "범죄", "드라마"]
+            },
+            {
+                id: 4,
+                title: "인셉션",
+                year: 2010,
+                genres: ["SF", "액션", "스릴러"]
+            },
+            {
+                id: 5,
+                title: "인터스텔라",
+                year: 2014,
+                genres: ["SF", "드라마", "모험"]
+            },
+            {
+                id: 6,
+                title: "매트릭스",
+                year: 1999,
+                genres: ["SF", "액션"]
+            },
+            {
+                id: 7,
+                title: "포레스트 검프",
+                year: 1994,
+                genres: ["드라마", "로맨스"]
+            },
+            {
+                id: 8,
+                title: "타이타닉",
+                year: 1997,
+                genres: ["로맨스", "드라마"]
+            },
+            {
+                id: 9,
+                title: "글래디에이터",
+                year: 2000,
+                genres: ["액션", "드라마"]
+            },
+            {
+                id: 10,
+                title: "반지의 제왕",
+                year: 2001,
+                genres: ["판타지", "모험", "액션"]
+            },
+            {
+                id: 11,
+                title: "해리 포터와 마법사의 돌",
+                year: 2001,
+                genres: ["판타지", "모험"]
+            },
+            {
+                id: 12,
+                title: "기생충",
+                year: 2019,
+                genres: ["드라마", "스릴러", "코미디"]
+            },
+            {
+                id: 13,
+                title: "올드보이",
+                year: 2003,
+                genres: ["스릴러", "액션", "드라마"]
+            },
+            {
+                id: 14,
+                title: "살인의 추억",
+                year: 2003,
+                genres: ["범죄", "스릴러", "드라마"]
+            },
+            {
+                id: 15,
+                title: "부산행",
+                year: 2016,
+                genres: ["액션", "공포", "스릴러"]
+            },
+            {
+                id: 16,
+                title: "토이 스토리",
+                year: 1995,
+                genres: ["애니메이션", "코미디", "모험"]
+            },
+            {
+                id: 17,
+                title: "센과 치히로의 행방불명",
+                year: 2001,
+                genres: ["애니메이션", "판타지", "모험"]
+            },
+            {
+                id: 18,
+                title: "라라랜드",
+                year: 2016,
+                genres: ["로맨스", "드라마", "뮤지컬"]
+            },
+            {
+                id: 19,
+                title: "위플래쉬",
+                year: 2014,
+                genres: ["드라마", "음악"]
+            },
+            {
+                id: 20,
+                title: "조커",
+                year: 2019,
+                genres: ["드라마", "범죄", "스릴러"]
+            },
+            {
+                id: 21,
+                title: "어벤져스: 엔드게임",
+                year: 2019,
+                genres: ["액션", "SF", "모험"]
+            },
+            {
+                id: 22,
+                title: "쥬라기 공원",
+                year: 1993,
+                genres: ["SF", "모험", "스릴러"]
+            },
+            {
+                id: 23,
+                title: "에이리언",
+                year: 1979,
+                genres: ["SF", "공포", "스릴러"]
+            },
+            {
+                id: 24,
+                title: "미션 임파서블: 폴아웃",
+                year: 2018,
+                genres: ["액션", "스릴러", "모험"]
+            },
+            {
+                id: 25,
+                title: "캐치 미 이프 유 캔",
+                year: 2002,
+                genres: ["범죄", "드라마", "코미디"]
+            },
+            {
+                id: 26,
+                title: "죽은 시인의 사회",
+                year: 1989,
+                genres: ["드라마"]
+            },
+            {
+                id: 27,
+                title: "그랜드 부다페스트 호텔",
+                year: 2014,
+                genres: ["코미디", "드라마", "모험"]
+            },
+            {
+                id: 28,
+                title: "코코",
+                year: 2017,
+                genres: ["애니메이션", "판타지", "음악"]
+            },
+            {
+                id: 29,
+                title: "스파이더맨: 뉴 유니버스",
+                year: 2018,
+                genres: ["애니메이션", "액션", "SF"]
+            },
+            {
+                id: 30,
+                title: "위대한 쇼맨",
+                year: 2017,
+                genres: ["뮤지컬", "드라마"]
+            }
+        ];
+
+        // 표시할 장르 목록
+        const genres = [
+            "액션",
+            "SF",
+            "드라마",
+            "스릴러",
+            "범죄",
+            "코미디",
+            "로맨스",
+            "판타지",
+            "모험",
+            "애니메이션",
+            "공포",
+            "뮤지컬",
+            "음악"
+        ];
+
+        // 티어 목록
+        const tiers = ["S", "A", "B", "C", "D"];
+
+        // 현재 장르 페이지
+        let currentGenreIndex = 0;
+
+        // 브라우저 저장소에서 평가 데이터 불러오기
+        let ratings = {};
+
+        try {
+            ratings = JSON.parse(
+                localStorage.getItem("movieTierRatings")
+            ) || {};
+        } catch (error) {
+            ratings = {};
+        }
+
+        // 장르 페이지 이동
+        function changeGenre(direction) {
+            currentGenreIndex += direction;
+
+            if (currentGenreIndex < 0) {
+                currentGenreIndex = 0;
+            }
+
+            if (currentGenreIndex >= genres.length) {
+                currentGenreIndex = genres.length - 1;
+            }
+
+            render();
+        }
+
+        // 영화 티어 변경
+        function changeTier(movieId, tier) {
+            if (tier === "") {
+                delete ratings[movieId];
+            } else {
+                ratings[movieId] = tier;
+            }
+
+            localStorage.setItem(
+                "movieTierRatings",
+                JSON.stringify(ratings)
+            );
+
+            render();
+        }
+
+        // 현재 장르의 영화 목록
+        function getGenreMovies(genre) {
+            return movies.filter(movie =>
+                movie.genres.includes(genre)
+            );
+        }
+
+        // 화면 렌더링
+        function render() {
+            const genre = genres[currentGenreIndex];
+            const genreMovies = getGenreMovies(genre);
+
+            document.getElementById("genreName").textContent =
+                genre;
+
+            document.getElementById("genreCount").textContent =
+                `${currentGenreIndex + 1} / ${genres.length} · ${genreMovies.length}편`;
+
+            document.getElementById("prevButton").disabled =
+                currentGenreIndex === 0;
+
+            document.getElementById("nextButton").disabled =
+                currentGenreIndex === genres.length - 1;
+
+            const tierList = document.getElementById("tierList");
+
+            tierList.innerHTML = "";
+
+            tiers.forEach(tier => {
+                const tierMovies = genreMovies.filter(movie =>
+                    ratings[movie.id] === tier
+                );
+
+                const tierElement = document.createElement("section");
+                tierElement.className = `tier tier-${tier}`;
+
+                const label = document.createElement("div");
+                label.className = "tier-label";
+                label.textContent = tier;
+
+                const movieList = document.createElement("div");
+                movieList.className = "movie-list";
+
+                if (tierMovies.length === 0) {
+                    const empty = document.createElement("span");
+                    empty.className = "empty";
+                    empty.textContent = "영화 없음";
+                    movieList.appendChild(empty);
+                }
+
+                tierMovies.forEach(movie => {
+                    const movieElement = document.createElement("div");
+                    movieElement.className = "movie";
+
+                    const title = document.createElement("span");
+                    title.className = "movie-title";
+                    title.textContent = movie.title;
+
+                    const year = document.createElement("span");
+                    year.className = "movie-year";
+                    year.textContent = movie.year;
+
+                    const select = document.createElement("select");
+
+                    tiers.forEach(optionTier => {
+                        const option = document.createElement("option");
+                        option.value = optionTier;
+                        option.textContent = optionTier;
+                        option.selected = optionTier === tier;
+                        select.appendChild(option);
+                    });
+
+                    select.addEventListener("change", () => {
+                        changeTier(movie.id, select.value);
+                    });
+
+                    movieElement.appendChild(title);
+                    movieElement.appendChild(year);
+                    movieElement.appendChild(select);
+
+                    movieList.appendChild(movieElement);
+                });
+
+                tierElement.appendChild(label);
+                tierElement.appendChild(movieList);
+
+                tierList.appendChild(tierElement);
+            });
+
+            // 아직 평가하지 않은 영화는 하단에 표시
+            const unrankedMovies = genreMovies.filter(movie =>
+                !ratings[movie.id]
+            );
+
+            if (unrankedMovies.length > 0) {
+                const section = document.createElement("section");
+                section.className = "tier";
+                section.style.gridTemplateColumns = "80px 1fr";
+
+                const label = document.createElement("div");
+                label.className = "tier-label";
+                label.style.background = "#777";
+                label.textContent = "?";
+
+                const list = document.createElement("div");
+                list.className = "movie-list";
+
+                unrankedMovies.forEach(movie => {
+                    const item = document.createElement("div");
+                    item.className = "movie";
+
+                    const title = document.createElement("span");
+                    title.className = "movie-title";
+                    title.textContent = movie.title;
+
+                    const year = document.createElement("span");
+                    year.className = "movie-year";
+                    year.textContent = movie.year;
+
+                    const select = document.createElement("select");
+
+                    const placeholder = document.createElement("option");
+                    placeholder.value = "";
+                    placeholder.textContent = "티어 선택";
+                    select.appendChild(placeholder);
+
+                    tiers.forEach(tier => {
+                        const option = document.createElement("option");
+                        option.value = tier;
+                        option.textContent = tier;
+                        select.appendChild(option);
+                    });
+
+                    select.addEventListener("change", () => {
+                        if (select.value) {
+                            changeTier(movie.id, select.value);
+                        }
+                    });
+
+                    item.appendChild(title);
+                    item.appendChild(year);
+                    item.appendChild(select);
+
+                    list.appendChild(item);
+                });
+
+                section.appendChild(label);
+                section.appendChild(list);
+
+                tierList.appendChild(section);
+            }
+        }
+
+        // 최초 실행
+        render();
+    </script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나만의 영화 티어리스트</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 티어별 색상 정의 */
+    .tier-S { background-color: #ff7f7f; color: #1a202c; }
+    .tier-A { background-color: #ffbf7f; color: #1a202c; }
+    .tier-B { background-color: #ffff7f; color: #1a202c; }
+    .tier-C { background-color: #7fff7f; color: #1a202c; }
+    .tier-D { background-color: #7fbfff; color: #1a202c; }
+    .tier-Unrated { background-color: #374151; color: #f3f4f6; }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col font-sans">
+
+  <!-- 헤더 -->
+  <header class="bg-gray-800 border-b border-gray-700 py-4 px-6 sticky top-0 z-10 shadow-md">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+      <h1 class="text-2xl font-bold text-red-500 tracking-wide flex items-center gap-2">
+        🎬 <span>영화 티어리스트</span>
+      </h1>
+      
+      <!-- 장르 선택 / 이동 탭 -->
+      <nav class="flex items-center gap-2 overflow-x-auto max-w-full pb-2 sm:pb-0" id="genre-tabs">
+        <!-- JS로 장르 버튼이 생성됩니다 -->
+      </nav>
+    </div>
+  </header>
+
+  <!-- 메인 컨텐츠 영역 -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col gap-6">
+    
+    <!-- 컨트롤 상단바 (현재 장르 정보 및 페이지 이동) -->
+    <div class="flex justify-between items-center bg-gray-800 p-4 rounded-xl border border-gray-700 shadow">
+      <div>
+        <span class="text-xs text-gray-400 block uppercase tracking-wider">현재 장르</span>
+        <h2 id="current-genre-title" class="text-xl sm:text-2xl font-bold text-white">액션</h2>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="prev-genre-btn" class="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition flex items-center gap-1">
+          ◀ <span class="hidden sm:inline">이전 장르</span>
+        </button>
+        <button id="next-genre-btn" class="px-3 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-sm font-medium transition flex items-center gap-1">
+          <span class="hidden sm:inline">다음 장르</span> ▶
+        </button>
+      </div>
+    </div>
+
+    <!-- 티어리스트 보드 -->
+    <div class="flex flex-col gap-3" id="tier-board">
+      <!-- S, A, B, C, D 티어 영역이 JS로 생성됩니다 -->
+    </div>
+
+    <!-- 미평가/미분류 영화 목록 -->
+    <section class="mt-6 bg-gray-800 p-4 rounded-xl border border-gray-700">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-base font-semibold text-gray-300 flex items-center gap-2">
+          📌 <span>평가 대기 중인 영화</span>
+        </h3>
+        <span id="unrated-count" class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">0개</span>
+      </div>
+      <div id="unrated-list" class="flex flex-wrap gap-2 min-h-[60px] p-2 bg-gray-900/50 rounded-lg border border-dashed border-gray-700 items-center">
+        <!-- 미평가 영화 카드가 dynamic하게 들어갑니다 -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="bg-gray-800 border-t border-gray-700 py-4 text-center text-xs text-gray-500">
+    영화 데이터 출처: TMDB 기반 정적 데이터 | 브라우저 로컬 저장소(LocalStorage)에 실시간 자동 저장됩니다.
+  </footer>
+
+  <script>
+    // 1. 영화 정적 데이터 (TMDB 기준 데이터 샘플 및 복수 장르 지원)
+    const initialMovies = [
+      { id: 1, title: "인셉션", year: 2010, genres: ["액션", "SF", "스릴러"] },
+      { id: 2, title: "다크 나이트", year: 2008, genres: ["액션", "범죄", "스릴러"] },
+      { id: 3, title: "어벤져스: 엔드게임", year: 2019, genres: ["액션", "SF", "모험"] },
+      { id: 4, title: "기생충", year: 2019, genres: ["드라마", "스릴러", "코미디"] },
+      { id: 5, title: "인터스텔라", year: 2014, genres: ["SF", "드라마", "모험"] },
+      { id: 6, title: "라라랜드", year: 2016, genres: ["드라마", "로맨스"] },
+      { id: 7, title: "센과 치히로의 행방불명", year: 2001, genres: ["애니메이션", "모험", "판타지"] },
+      { id: 8, title: "매트릭스", year: 1999, genres: ["액션", "SF"] },
+      { id: 9, title: "쇼생크 탈출", year: 1994, genres: ["드라마", "범죄"] },
+      { id: 10, title: "토이 스토리", year: 1995, genres: ["애니메이션", "코미디", "모험"] },
+      { id: 11, title: "타이타닉", year: 1997, genres: ["드라마", "로맨스"] },
+      { id: 12, title: "범죄도시", year: 2017, genres: ["액션", "범죄"] },
+      { id: 13, title: "아바타", year: 2009, genres: ["SF", "모험", "액션"] },
+      { id: 14, title: "헤어질 결심", year: 2022, genres: ["드라마", "로맨스", "스릴러"] },
+      { id: 15, title: "위플래쉬", year: 2014, genres: ["드라마"] }
+    ];
+
+    const genres = ["액션", "SF", "드라마", "스릴러", "모험", "범죄", "로맨스", "애니메이션", "코미디"];
+    const tiers = ["S", "A", "B", "C", "D"];
+
+    // 2. 상태 관리
+    let currentGenreIndex = 0;
+    // userRatings: { [movieId]: "S" | "A" | "B" | "C" | "D" | null }
+    let userRatings = {};
+
+    // 로컬 스토리지 데이터 불러오기
+    function loadRatings() {
+      const saved = localStorage.getItem("movie_tier_ratings");
+      if (saved) {
+        try {
+          userRatings = JSON.parse(saved);
+        } catch (e) {
+          userRatings = {};
+        }
+      }
+    }
+
+    // 로컬 스토리지 데이터 저장하기
+    function saveRatings() {
+      localStorage.setItem("movie_tier_ratings", JSON.stringify(userRatings));
+    }
+
+    // 티어 평가 수정 함수
+    function setRating(movieId, tier) {
+      if (tier === "None") {
+        delete userRatings[movieId];
+      } else {
+        userRatings[movieId] = tier;
+      }
+      saveRatings();
+      render();
+    }
+
+    // 3. UI 렌더링 함수
+    function render() {
+      const currentGenre = genres[currentGenreIndex];
+
+      // 헤더 장르 탭 렌더링
+      const tabsNav = document.getElementById("genre-tabs");
+      tabsNav.innerHTML = "";
+      genres.forEach((g, idx) => {
+        const btn = document.createElement("button");
+        btn.className = `px-3 py-1.5 rounded-lg text-sm font-semibold whitespace-nowrap transition ${
+          idx === currentGenreIndex
+            ? "bg-red-600 text-white shadow"
+            : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+        }`;
+        btn.textContent = g;
+        btn.onclick = () => {
+          currentGenreIndex = idx;
+          render();
+        };
+        tabsNav.appendChild(btn);
+      });
+
+      // 현재 장르 타이틀 update
+      document.getElementById("current-genre-title").textContent = `${currentGenre} 장르 티어리스트`;
+
+      // 현재 장르에 해당하는 영화 필터링
+      const genreMovies = initialMovies.filter(movie => movie.genres.includes(currentGenre));
+
+      // 티어 보드 렌더링
+      const board = document.getElementById("tier-board");
+      board.innerHTML = "";
+
+      tiers.forEach(tier => {
+        const tierRow = document.createElement("div");
+        tierRow.className = "flex flex-col sm:flex-row bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-sm min-h-[70px]";
+
+        // 티어 라벨
+        const tierLabel = document.createElement("div");
+        tierLabel.className = `w-full sm:w-20 py-2 sm:py-0 flex items-center justify-center font-extrabold text-2xl tracking-wider tier-${tier}`;
+        tierLabel.textContent = tier;
+
+        // 영화 드롭/컨테이너 영역
+        const movieContainer = document.createElement("div");
+        movieContainer.className = "flex-1 p-3 flex flex-wrap gap-2 items-center bg-gray-800/80";
+
+        // 해당 티어에 지정된 영화 추출
+        const targetMovies = genreMovies.filter(m => userRatings[m.id] === tier);
+
+        if (targetMovies.length === 0) {
+          const emptyText = document.createElement("span");
+          emptyText.className = "text-xs text-gray-600 italic select-none";
+          emptyText.textContent = "비어 있음";
+          movieContainer.appendChild(emptyText);
+        } else {
+          targetMovies.forEach(movie => {
+            movieContainer.appendChild(createMovieCard(movie));
+          });
+        }
+
+        tierRow.appendChild(tierLabel);
+        tierRow.appendChild(movieContainer);
+        board.appendChild(tierRow);
+      });
+
+      // 미평가 목록 렌더링
+      const unratedContainer = document.getElementById("unrated-list");
+      unratedContainer.innerHTML = "";
+      const unratedMovies = genreMovies.filter(m => !userRatings[m.id]);
+
+      document.getElementById("unrated-count").textContent = `${unratedMovies.length}개`;
+
+      if (unratedMovies.length === 0) {
+        const emptyText = document.createElement("span");
+        emptyText.className = "text-xs text-gray-500 italic py-2";
+        emptyText.textContent = "현재 장르의 모든 영화가 평가되었습니다 🎉";
+        unratedContainer.appendChild(emptyText);
+      } else {
+        unratedMovies.forEach(movie => {
+          unratedContainer.appendChild(createMovieCard(movie));
+        });
+      }
+    }
+
+    // 영화 카드 엘리먼트 생성 함수
+    function createMovieCard(movie) {
+      const card = document.createElement("div");
+      card.className = "bg-gray-700 hover:bg-gray-650 border border-gray-600 rounded-lg p-2.5 flex items-center justify-between gap-3 shadow-sm transition-all text-sm group";
+
+      const info = document.createElement("div");
+      info.className = "flex flex-col";
+      
+      const title = document.createElement("span");
+      title.className = "font-medium text-gray-100 leading-tight";
+      title.textContent = movie.title;
+
+      const meta = document.createElement("span");
+      meta.className = "text-[11px] text-gray-400 mt-0.5";
+      meta.textContent = `${movie.year} • ${movie.genres.join(', ')}`;
+
+      info.appendChild(title);
+      info.appendChild(meta);
+
+      // 티어 변경 셀렉트박스
+      const select = document.createElement("select");
+      select.className = "bg-gray-800 text-xs text-gray-200 border border-gray-600 rounded px-1.5 py-1 focus:outline-none focus:border-red-500 cursor-pointer";
+
+      const currentRating = userRatings[movie.id] || "None";
+
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "None";
+      defaultOption.textContent = "미평가";
+      if (currentRating === "None") defaultOption.selected = true;
+      select.appendChild(defaultOption);
+
+      tiers.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = `${t} 등급`;
+        if (currentRating === t) opt.selected = true;
+        select.appendChild(opt);
+      });
+
+      select.onchange = (e) => {
+        setRating(movie.id, e.target.value);
+      };
+
+      card.appendChild(info);
+      card.appendChild(select);
+
+      return card;
+    }
+
+    // 4. 이벤트 리스너 등록 (장르 이전/다음 버튼)
+    document.getElementById("prev-genre-btn").onclick = () => {
+      currentGenreIndex = (currentGenreIndex - 1 + genres.length) % genres.length;
+      render();
+    };
+
+    document.getElementById("next-genre-btn").onclick = () => {
+      currentGenreIndex = (currentGenreIndex + 1) % genres.length;
+      render();
+    };
+
+    // 초기화 실행
+    loadRatings();
+    render();
+  </script>
+</body>
+</html>

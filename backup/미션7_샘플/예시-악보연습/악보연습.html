@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>악보 연습 · 음표 찾기</title>
+<style>
+:root{color-scheme:light;--bg:#f5f2e9;--paper:#fffdf7;--ink:#202d27;--muted:#626d64;--green:#244f3f;--gold:#bb8428;--line:#dedfd3}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;line-height:1.6;word-break:keep-all}main{width:min(100% - 32px,560px);margin:clamp(20px,7vh,64px) auto}header{margin-bottom:22px}.eyebrow{font-size:13px;color:var(--green);font-weight:700}h1{font-size:32px;letter-spacing:-.06em;line-height:1.3;margin:6px 0 10px}p{margin:0;color:var(--muted);font-size:15px}.card{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 12px 40px #24342808}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px}.top strong{color:var(--green)}.progress{height:5px;background:#e8e9df;border-radius:10px;margin-top:12px;overflow:hidden}.progress span{display:block;width:0;height:100%;background:var(--green);transition:width .2s}svg{display:block;width:100%;height:auto;margin:8px 0}.staff{stroke:#9aa69a;stroke-width:1.3}.note{fill:var(--gold);stroke:var(--gold)}.note.correct{fill:var(--green);stroke:var(--green)}.feedback{min-height:52px;text-align:center;font-size:15px;font-weight:650;display:grid;place-items:center;margin:0 0 16px}.feedback.wrong{color:#974435}.feedback.good{color:var(--green)}.keys{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}button{font:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:focus-visible{outline:3px solid var(--gold);outline-offset:4px}.key{height:120px;border:1px solid #c1c9bd;border-bottom:5px solid #d4d8cc;border-radius:5px 5px 10px 10px;background:linear-gradient(90deg,#f4f3eb,#fffefa 20%,#fffefa 85%,#edede3);color:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:0 0 12px;font-size:20px;font-weight:650}.key small{font-size:11px;color:var(--muted);font-weight:400}.key:active,.key.right{background:#d9ebdd;border-bottom-color:#8aae97}.key.answer{box-shadow:inset 0 0 0 3px var(--gold)}.key.wrong{background:#f5dcd0}.key:disabled{cursor:default}.hint{text-align:center;font-size:12px;margin:14px 0 0;color:var(--muted)}.result{text-align:center;padding:28px 0 8px}.result h2{font-size:26px;margin:0 0 8px}.score{font-size:52px;color:var(--green);font-weight:750;line-height:1.3;margin:22px 0 0}.score-label{font-size:13px;margin-bottom:20px}.restart{background:var(--green);color:white;border:0;border-radius:12px;padding:13px 24px;min-height:48px;font-weight:650;margin-top:24px}.foot{text-align:center;font-size:12px;margin-top:18px;color:var(--muted)}[hidden]{display:none!important}@media(max-width:400px){.card{padding:18px}h1{font-size:28px}.key{height:100px}.feedback{font-size:14px}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">악보 연습</span>
+    <h1>이 음표는 무슨 음일까요?</h1>
+    <p>금색 음표를 보고, 같은 음의 건반을 눌러 보세요.</p>
+  </header>
+  <section class="card" aria-label="음표 찾기">
+    <div class="top"><strong>음표 찾기</strong><span id="count">1 / 12</span></div>
+    <div class="progress" role="progressbar" aria-label="맞힌 음표" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><span id="bar"></span></div>
+    <div id="practice">
+      <svg viewBox="0 0 440 200" role="img" aria-labelledby="score-title">
+        <title id="score-title">높은음자리표 악보. 금색 음표의 이름을 찾아보세요.</title>
+        <g class="staff"><path d="M24 54H416 M24 74H416 M24 94H416 M24 114H416 M24 134H416"/></g>
+        <!-- 높은음자리표 윤곽. 소용돌이의 중심을 둘째 줄(솔4)에 맞춤. -->
+        <path fill="#244f3f" transform="translate(42 165) scale(1.55 -1.55)" d="M4.531 37.188Q4.531 42.734 6.211 47.383Q7.891 52.031 10.742 56.016Q13.594 60.000 17.422 63.516Q21.250 67.031 25.625 70.469Q24.688 75.703 24.609 81.719Q24.609 92.031 27.734 98.359Q30.859 104.922 36.250 104.922Q40.000 104.922 42.305 100.742Q44.609 96.562 44.609 88.594Q44.609 78.438 39.453 71.328Q37.656 68.906 35.391 66.484Q33.125 64.062 30.234 61.641Q31.484 55.703 32.578 48.984Q39.844 48.984 44.375 44.453Q48.984 39.844 48.984 32.344Q48.984 26.328 46.055 22.031Q43.125 17.734 38.203 15.703Q38.750 12.031 39.023 8.789Q39.297 5.547 39.297 2.578Q39.297 -5.234 35.664 -8.750Q32.031 -12.266 26.094 -12.266Q20.312 -12.266 16.875 -8.906Q13.438 -5.469 13.438 -1.484Q13.359 2.031 15.352 4.297Q17.344 6.562 20.625 6.562Q23.906 6.562 25.703 4.531Q27.500 2.500 27.500 -0.469Q27.500 -2.109 26.875 -3.398Q26.250 -4.688 25.156 -5.508Q24.062 -6.328 22.656 -6.602Q21.250 -6.875 19.609 -6.484Q21.641 -9.453 26.250 -9.453Q31.406 -9.453 34.023 -6.406Q36.641 -3.359 36.641 2.500Q36.641 5.234 36.367 8.281Q36.094 11.328 35.625 14.844Q32.891 14.141 29.844 14.141Q24.375 14.141 19.766 15.625Q15.156 17.109 11.758 20.039Q8.359 22.969 6.445 27.266Q4.531 31.562 4.531 37.188ZM33.438 28.516Q32.578 34.297 31.562 39.922Q27.969 39.922 25.586 37.734Q23.203 35.547 23.203 31.797Q23.203 29.375 24.414 27.500Q25.625 25.625 27.812 24.531Q27.500 23.672 27.266 23.047Q23.750 23.984 21.172 26.953Q18.594 29.922 18.594 35.156Q18.594 40.859 22.656 44.922Q25.781 47.891 30.000 48.750Q28.516 56.484 27.812 59.688Q24.609 57.109 21.602 54.336Q18.594 51.562 16.250 48.516Q13.906 45.469 12.500 42.031Q11.094 38.594 11.094 34.609Q11.094 30.156 12.578 26.914Q14.062 23.672 16.680 21.562Q19.297 19.453 22.812 18.438Q26.328 17.422 30.391 17.422Q32.969 17.422 35.078 18.047Q34.219 23.203 33.438 28.516ZM28.516 72.422Q34.609 76.875 37.383 81.133Q40.156 85.391 40.156 89.922Q40.156 92.109 39.141 93.750Q38.125 95.391 36.172 95.391Q32.500 95.391 30.312 90.156Q28.125 85.078 28.125 77.656Q28.125 75.234 28.516 72.422ZM43.672 29.844Q43.672 32.031 42.852 33.906Q42.031 35.781 40.703 37.109Q39.375 38.438 37.656 39.180Q35.938 39.922 34.141 39.922Q34.922 36.250 35.781 30.781Q36.562 25.781 37.500 19.062Q40.859 20.859 42.266 23.906Q43.672 26.953 43.672 29.844Z"/>
+        <g id="note" class="note">
+          <line id="ledger" x1="247" x2="293" y1="154" y2="154" stroke-width="1.5"/>
+          <ellipse id="head" cx="270" cy="154" rx="13" ry="9" transform="rotate(-18 270 154)"/>
+          <line id="stem" x1="282" x2="282" y1="151" y2="100" stroke-width="2.5"/>
+        </g>
+      </svg>
+      <p id="feedback" class="feedback" role="status" aria-live="polite">아래 건반에서 같은 음을 찾아보세요.</p>
+      <div class="keys" aria-label="도4부터 솔4까지 건반">
+        <button class="key" data-note="0" aria-label="도4">도<small>도4 · A</small></button>
+        <button class="key" data-note="1" aria-label="레4">레<small>레4 · S</small></button>
+        <button class="key" data-note="2" aria-label="미4">미<small>미4 · D</small></button>
+        <button class="key" data-note="3" aria-label="파4">파<small>파4 · F</small></button>
+        <button class="key" data-note="4" aria-label="솔4">솔<small>솔4 · G</small></button>
+      </div>
+      <p class="hint">높은음자리표 · 도4~솔4 다섯 음<br>건반을 누르거나 컴퓨터 자판 A S D F G로 답하세요.<br><label><input id="sound" type="checkbox" checked> 피아노 소리</label><span id="sound-status" role="status"></span></p>
+    </div>
+    <div id="result" class="result" hidden>
+      <h2 tabindex="-1" id="result-title">12개를 모두 찾았어요.</h2>
+      <p>틀린 음도 다시 눌러 끝까지 완성했어요.</p>
+      <div id="accuracy" class="score"></div>
+      <p class="score-label">첫 시도에 맞힌 비율</p>
+      <p id="summary"></p>
+      <button id="restart" class="restart">다시 연습하기</button>
+    </div>
+  </section>
+  <p class="foot">이 파일 하나로 바로 연습할 수 있어요. 기록은 저장하지 않습니다.</p>
+</main>
+<script>
+(() => {
+  const names = ['도4', '레4', '미4', '파4', '솔4'];
+  const keys = [...document.querySelectorAll('.key')];
+  const $ = id => document.getElementById(id);
+  let questions, index, firstCorrect, mistakes, missed, locked, timer;
+
+  // 외부 음원 없이, 짧은 타격과 빠르게 잦아드는 배음으로 피아노 음색을 만듭니다.
+  let audio;
+  let master;
+  const voices = new Set();
+  const midiNotes = [60, 62, 64, 65, 67];
+
+  function stopSound() {
+    voices.forEach(voice => voice.stop());
+  }
+
+  function playPiano(value) {
+    if (!$('sound').checked) return;
+    try {
+      if (!audio || audio.state === 'closed') {
+        const Audio = window.AudioContext || window.webkitAudioContext;
+        if (!Audio) throw new Error('AudioContext unavailable');
+        audio = new Audio();
+        master = audio.createGain();
+        master.gain.value = 0.4;
+        master.connect(audio.destination);
+      }
+      // 첫 클릭·터치·키 입력에서 오디오를 켭니다.
+      const ready = audio.state === 'running' ? Promise.resolve() : audio.resume();
+      ready.then(() => {
+        if (!$('sound').checked || audio.state !== 'running') return;
+        $('sound-status').textContent = '';
+        if (voices.size >= 6) voices.values().next().value.stop();
+        const now = audio.currentTime;
+        const frequency = 440 * Math.pow(2, (midiNotes[value] - 69) / 12);
+        const output = audio.createGain();
+        output.connect(master);
+        const parts = [];
+        let ended = 0;
+        let stopped = false;
+        const voice = { stop() {
+          if (stopped) return;
+          stopped = true;
+          output.gain.setTargetAtTime(0, audio.currentTime, 0.015);
+          parts.forEach(part => part.osc.stop(audio.currentTime + 0.08));
+          voices.delete(voice);
+        }};
+        voices.add(voice);
+        [1, 0.42, 0.2, 0.1, 0.045, 0.02].forEach((level, i) => {
+          const osc = audio.createOscillator();
+          const gain = audio.createGain();
+          const duration = 1.7 / (1 + i * 0.45);
+          osc.type = 'sine';
+          osc.frequency.value = frequency * (i + 1) * Math.sqrt(1 + 0.00012 * i * i);
+          gain.gain.setValueAtTime(0, now);
+          gain.gain.linearRampToValueAtTime(level * 0.4, now + 0.005);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+          osc.connect(gain);
+          gain.connect(output);
+          parts.push({osc, gain});
+          osc.onended = () => {
+            osc.disconnect(); gain.disconnect();
+            if (++ended === 6) { output.disconnect(); voices.delete(voice); }
+          };
+          osc.start(now);
+          osc.stop(now + duration + 0.05);
+        });
+      }).catch(() => {
+        $('sound-status').textContent = ' · 소리를 켤 수 없어요. 브라우저의 소리 설정을 확인해 주세요.';
+      });
+    } catch (error) {
+      $('sound-status').textContent = ' · 이 브라우저에서는 소리를 켤 수 없어요.';
+    }
+  }
+
+  $('sound').addEventListener('change', () => {
+    if (!$('sound').checked) stopSound();
+    $('sound-status').textContent = '';
+  });
+
+  function start() {
+    clearTimeout(timer);
+    // 다섯 음을 모두 포함하고, 같은 음이 연달아 나오지 않게 합니다.
+    questions = [];
+    while (questions.length < 12) {
+      const pool = [0, 1, 2, 3, 4];
+      while (pool.length && questions.length < 12) {
+        const choices = pool.filter(note => note !== questions[questions.length - 1]);
+        const next = choices[Math.floor(Math.random() * choices.length)] ?? pool[0];
+        // 다음 묶음의 첫 음만 앞 묶음의 마지막 음과 겹칠 수 있으므로,
+        // 새 묶음의 첫 선택에서 같은 음을 제외합니다.
+        questions.push(next);
+        pool.splice(pool.indexOf(next), 1);
+      }
+    }
+    index = 0; firstCorrect = 0; mistakes = 0;
+    $('practice').hidden = false;
+    $('result').hidden = true;
+    show();
+  }
+
+  function progress() {
+    $('bar').style.width = `${index / questions.length * 100}%`;
+    document.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', index);
+  }
+
+  function show() {
+    missed = false; locked = false;
+    $('count').textContent = `${index + 1} / ${questions.length}`;
+    progress();
+    const y = 154 - questions[index] * 10;
+    $('head').setAttribute('cy', y);
+    $('head').setAttribute('transform', `rotate(-18 270 ${y})`);
+    $('stem').setAttribute('y1', y - 3);
+    $('stem').setAttribute('y2', y - 54);
+    $('ledger').style.display = questions[index] === 0 ? '' : 'none';
+    $('note').classList.remove('correct');
+    $('feedback').textContent = '아래 건반에서 같은 음을 찾아보세요.';
+    $('feedback').className = 'feedback';
+    keys.forEach(key => { key.classList.remove('right', 'wrong', 'answer'); key.disabled = false; });
+  }
+
+  function answer(value) {
+    if (locked || $('practice').hidden) return;
+    playPiano(value);
+    keys.forEach(key => key.classList.remove('wrong'));
+    if (value !== questions[index]) {
+      missed = true; mistakes++;
+      keys[value].classList.add('wrong');
+      keys[questions[index]].classList.add('answer');
+      $('feedback').textContent = `지금은 ${names[questions[index]]}입니다. 다시 눌러보세요.`;
+      $('feedback').className = 'feedback wrong';
+      return;
+    }
+    locked = true;
+    if (!missed) firstCorrect++;
+    keys[value].classList.remove('answer');
+    keys[value].classList.add('right');
+    keys.forEach(key => { key.disabled = true; });
+    $('note').classList.add('correct');
+    $('feedback').textContent = `맞았어요! ${names[value]}입니다.`;
+    $('feedback').className = 'feedback good';
+    timer = setTimeout(() => {
+      index++;
+      progress();
+      if (index < questions.length) { show(); return; }
+      $('practice').hidden = true;
+      $('result').hidden = false;
+      $('count').textContent = '완료 · 12 / 12';
+      $('accuracy').textContent = `${Math.round(firstCorrect / questions.length * 100)}%`;
+      $('summary').textContent = `첫 시도 정답 ${firstCorrect} / 12개 · 틀린 건반 ${mistakes}회`;
+      $('result-title').focus();
+    }, 650);
+  }
+
+  keys.forEach(key => key.addEventListener('click', () => answer(Number(key.dataset.note))));
+  document.addEventListener('keydown', event => {
+    if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.isComposing) return;
+    const value = ['KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG'].indexOf(event.code);
+    if (value >= 0 && !$('practice').hidden) { event.preventDefault(); answer(value); }
+  });
+  $('restart').addEventListener('click', () => { start(); keys[0].focus(); });
+  start();
+})();
+</script>
+</body>
+</html>
