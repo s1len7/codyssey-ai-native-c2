@@ -14,7 +14,7 @@
 | [mission1-4](./mission1-4) | 기능 추가와 복구 | 칸(티어)별 영화 개수 표시, 이동한 순서대로 티어 칸에 배치 | `영화_원본.html`, `영화_기능추가_수정2.html`, `기획서.md`, `미션4_기록.md`, `screenshot/` |
 | [mission2-1](./mission2-1) | Codyssey 랜딩 페이지 기획서 | 수강생이 여러 사이트를 한곳에서 찾게 하는 랜딩 페이지 기획서 | `기획서.md` |
 | [mission2-2](./mission2-2) | Codyssey Landing Page 제작·검증 | 두 AI 비교 후 선택한 랜딩 페이지 HTML 및 검증 기록 | `페이지_v3_A.html`, `제작검증기록.md`, `기획서.md` |
-| [mission2-3](./mission2-3) | (템플릿) | (템플릿) | `기획서.md`, `제작검증기록.md` |
+| [mission2-3](./mission2-3) | Codyssey Landing Page 테스트·개선 | 선택한 HTML을 테스트·수정하고 사용자 피드백 반영, 기획서·제작검증기록 최종 정리 | `페이지_v3_A.html`, `페이지_v2_A.html`, `페이지_v1_A.html`, `기획서.md`, `제작검증기록.md` |
 
 ## 파일 구성
 
