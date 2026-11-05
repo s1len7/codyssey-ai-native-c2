@@ -49,6 +49,8 @@ POST /ev/request/selectLrnUqstnNmList
 POST /ev/request/selectProjectNmList
 POST /learning/learningProgress/allLearningList
 POST /myinfo/usr/list
+POST /notice/noticeDetail
+POST /notice/noticeFileList
 POST /notice/noticeList
 POST /schedule/psblScheduleList/
 POST /schedule/scheduleAllList/
