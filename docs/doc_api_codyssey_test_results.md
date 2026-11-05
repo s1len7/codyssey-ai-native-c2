@@ -92,12 +92,16 @@
 - [x] 평가 참여 목록 전용 API 확정: `POST /ev/participation/seachParticipationList`.
 - [ ] 평가 참여 상세 읽기 API(상태 변경 버튼 제외, UI 제약/리스크로 미완료).
 - [ ] 학사일정/특강 상세/신청 관련 읽기 API(있다면).
-- [ ] 공지 상세 API(목록 본문 포함으로 별도 호출 없을 수 있음).
-- [ ] 알림 목록 API(카운트 외).
+- [ ] 공지 상세 API(목록 본문 포함으로 별도 호출 없을 수 있음; 상세 라우팅 추가 확인).
+- [ ] 알림 목록 API(카운트 외). `/alarm/alarmList` UI는 있으나 전용 API 미확정.
 - [ ] `scheduleType`/기간/월 이동/필터의 실제 UI 파라미터 추가 수집.
 - [ ] 전문가 평가 유형 실데이터/API 확인.
 - [ ] ID 불변성/취소·삭제 표현 규칙(변경 이벤트 관찰 필요).
 - [ ] 로그인/로그아웃/토큰 갱신 API 계약(승인된 마스킹 캡처 필요).
 
+
 ## 2026-11-05 추가 캡처
 - T-005 보강: 참여 페이지 로드 시 `seachParticipationList` + `evlStusCdList`(LP019/LP010) 호출 확인. 상세 버튼은 opencli native click 제약으로 미진입(상태 변경 리스크 회피).
+- T-007 알림 페이지(`/alarm/alarmList`): UI에 목록 노출. 재캡처 API는 `optionList`, `alarmCntList`, `noticeList`, 공통 API만 관찰. **알림 목록 조회 전용 API 미확정**. 알림 화면에는 개인식별정보가 포함될 수 있어 원문 기록 생략.
+- T-008 공지 목록(`/notice/noticeGoList`): `noticeList` 응답에 `pstartCn`(본문 HTML) 포함. 상세 전용 API 호출 미관찰. 스냅샷상 항목 링크 `href=/` 사례로 라우팅/상세 API 추가 확인 필요.
+
