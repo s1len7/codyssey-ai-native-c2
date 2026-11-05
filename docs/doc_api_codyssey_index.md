@@ -19,7 +19,7 @@
 | [`doc_api_codyssey_test_results.md`](./doc_api_codyssey_test_results.md) | 테스트 로그, 미확인/TODO, 인계용 | 진행 중 |
 | [`doc_api_codyssey_schedule.md`](./doc_api_codyssey_schedule.md) | 일정/캘린더/가능 슬롯 | 관찰됨 |
 | [`doc_api_codyssey_evaluation_request.md`](./doc_api_codyssey_evaluation_request.md) | 평가 요청 화면/작성 흐름 조회 API | 관찰됨 |
-| [`doc_api_codyssey_evaluation_participation.md`](./doc_api_codyssey_evaluation_participation.md) | 평가 참여(화면+캘린더 A패턴), 전용 API | 부분 미확인 |
+| [`doc_api_codyssey_evaluation_participation.md`](./doc_api_codyssey_evaluation_participation.md) | 평가 참여 목록/코드, 상세는 미확인 | 관찰됨(목록) |
 | [`doc_api_codyssey_academic_lecture.md`](./doc_api_codyssey_academic_lecture.md) | 학사일정/전문가 특강(`academicList`) | 관찰됨 |
 | [`doc_api_codyssey_notice.md`](./doc_api_codyssey_notice.md) | 공지 목록 | 관찰됨 |
 | [`doc_api_codyssey_alarm.md`](./doc_api_codyssey_alarm.md) | 알림 옵션/건수 | 관찰됨 |
@@ -39,6 +39,7 @@ GET  /rest/user/info/detail
 GET  /survey/gate/active
 POST /alarm/alarmList/alarmCntList
 POST /alarm/alarmList/optionList
+POST /ev/participation/seachParticipationList
 POST /ev/request/evlTotList
 POST /ev/request/mtlEvlTxnDtoByPkList
 POST /ev/request/searchList

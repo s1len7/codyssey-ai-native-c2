@@ -21,10 +21,11 @@
 
 ## 완료/진행
 - [x] Git 상태 확인, opencli 연결 확인.
-- [x] 테스트 결과 로그 파일 생성.
-- [ ] API 종류별 문서 생성(진행 중).
-- [ ] 미지/미완 항목 추가 테스트.
-- [ ] 최종 커밋/푸시.
+- [x] 테스트 결과 로그 파일 생성/갱신.
+- [x] API 종류별 문서 분리 생성.
+- [x] 평가 참여 목록 API 추가 확인(`seachParticipationList`, LP019/LP010).
+- [x] 종류별 문서/로그 커밋·푸시.
+- [ ] 미지/미완 항목: 참여 상세 읽기 API, 로그인 계약, 알림 목록/공지 상세/학사일정 상세/전문가 평가 타입 실데이터, 스케줄 파라미터 UI 추가 캡처.
 
 ## 관찰된 API 요약(고유 Method+Path)
 | Method | Path | 분류 | 상태 |
@@ -73,10 +74,14 @@
 - `/main`, `/notice/noticeGoList`, `/policy/policyGoList`, `/studygroup/studygroupGoList`, `/learning/learningProgress/list`, `/ev/request/evalutionRequestList`, `/ev/request/evalutionRequestWrite`, `/ev/participation/evalutionParticipationList` 순회.
 - 판정: 공통/공지/알림/학습/포인트/소모임/평가요청 API 관찰.
 
-### T-005 평가 참여 전용 목록/상세 API (미완료)
-- 화면: 참여 목록 4건 노출(`mtlEvlSn-*`, 예정/시작/결과 PASS·FAIL/평가완료).
-- 현재 캡처: 전용 참여 목록 엔드포인트 미확정(캘린더 `scheduleAllList`의 A패턴, `mtlEvlTxnDtoByPkList`는 요청 작성 흐름에서 관찰).
-- 다음: 참여 페이지 재캡처, 항목 클릭/상세 진입 시 읽기 API 관찰(상태 변경 버튼 실행 금지).
+### T-005 평가 참여 전용 목록 API
+- 화면: `/ev/participation/evalutionParticipationList`, 4건 노출.
+- 관찰 API: `POST https://api.usr.codyssey.kr/ev/participation/seachParticipationList` (철자 `seach` 그대로 관찰).
+- Content-Type: `application/x-www-form-urlencoded`.
+- Body shape(관찰): `projectNm, reqMbrNm, mtlEvlStusCd, mtlEvlPamBgngDt, mtlEvlPamBgngDted, evlStdtFirst, evlStdtLast, mtlEvlResltCd, evlMbrId=<redacted>, evlInstCd=<redacted>, page, pagePerRows`.
+- 응답: `result.list[]`에 `mtlEvlSn`, 과제/팀/요청자, 예정/시작일시, `mtlEvlStusCd/Nm`(`00006/평가완료`), `mtlEvlResltCd/Nm`(`00001/PASS`,`00002/FAIL`), `mtlEvlScr`, `paginator`, `allCount`.
+- 함께 호출: `GET /ev/request/evlStusCdList?groupCd=LP019`(상호평가 상태), `?groupCd=LP010`(결과 PASS/FAIL).
+- 판정: **참여 목록 API 문서화 가능**. 상세 진입은 opencli native input 제약/상태변경 리스크로 미완료.
 
 ### T-006 로그인 API (미확인)
 - 관찰: 로그인 후 API에 `X-Requested-With`, `X-XSRF-TOKEN` 사용. CSRF 오류 재현.
@@ -84,11 +89,15 @@
 - 다음: 사용자가 로그아웃 상태에서 로그인 흐름 네트워크를 마스킹 수집하면 `doc_api_codyssey_auth.md` 보강.
 
 ## 미지/후속 TODO
-- [ ] 평가 참여 목록/상세 전용 API 확정.
+- [x] 평가 참여 목록 전용 API 확정: `POST /ev/participation/seachParticipationList`.
+- [ ] 평가 참여 상세 읽기 API(상태 변경 버튼 제외, UI 제약/리스크로 미완료).
 - [ ] 학사일정/특강 상세/신청 관련 읽기 API(있다면).
-- [ ] 공지 상세 API.
+- [ ] 공지 상세 API(목록 본문 포함으로 별도 호출 없을 수 있음).
 - [ ] 알림 목록 API(카운트 외).
 - [ ] `scheduleType`/기간/월 이동/필터의 실제 UI 파라미터 추가 수집.
 - [ ] 전문가 평가 유형 실데이터/API 확인.
 - [ ] ID 불변성/취소·삭제 표현 규칙(변경 이벤트 관찰 필요).
 - [ ] 로그인/로그아웃/토큰 갱신 API 계약(승인된 마스킹 캡처 필요).
+
+## 2026-11-05 추가 캡처
+- T-005 보강: 참여 페이지 로드 시 `seachParticipationList` + `evlStusCdList`(LP019/LP010) 호출 확인. 상세 버튼은 opencli native click 제약으로 미진입(상태 변경 리스크 회피).
