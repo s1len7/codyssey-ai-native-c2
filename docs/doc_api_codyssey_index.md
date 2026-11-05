@@ -22,7 +22,7 @@
 | [`doc_api_codyssey_evaluation_participation.md`](./doc_api_codyssey_evaluation_participation.md) | 평가 참여 목록/코드, 상세는 미확인 | 관찰됨(목록) |
 | [`doc_api_codyssey_academic_lecture.md`](./doc_api_codyssey_academic_lecture.md) | 학사일정/전문가 특강(`academicList`) | 관찰됨 |
 | [`doc_api_codyssey_notice.md`](./doc_api_codyssey_notice.md) | 공지 목록 | 관찰됨 |
-| [`doc_api_codyssey_alarm.md`](./doc_api_codyssey_alarm.md) | 알림 옵션/건수 | 관찰됨 |
+| [`doc_api_codyssey_alarm.md`](./doc_api_codyssey_alarm.md) | 알림 옵션/건수/목록 | 관찰됨 |
 | [`doc_api_codyssey_learning.md`](./doc_api_codyssey_learning.md) | 학습 진행 목록 | 관찰됨 |
 | [`doc_api_codyssey_user_common.md`](./doc_api_codyssey_user_common.md) | 공통 사용자/메뉴/포인트/설문 게이트 | 관찰됨 |
 | [`doc_api_codyssey_studygroup.md`](./doc_api_codyssey_studygroup.md) | 소모임 목록 | 관찰됨 |
@@ -38,6 +38,7 @@ GET  /point/exp/total/detail
 GET  /rest/user/info/detail
 GET  /survey/gate/active
 POST /alarm/alarmList/alarmCntList
+POST /alarm/alarmList/list
 POST /alarm/alarmList/optionList
 POST /ev/participation/seachParticipationList
 POST /ev/request/evlTotList
