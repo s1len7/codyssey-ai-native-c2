@@ -4,6 +4,12 @@
 
 각 미션 폴더(`missionX-Y`) 안에는 기획서, HTML 결과물, 제작/검증 기록 등이 들어 있으며, 모든 결과물은 로그인·서버·API 키 없이 브라우저에서 단일 HTML 파일로 바로 열 수 있습니다.
 
+## 저장소 받기
+
+```bash
+git clone https://github.com/s1len7/codyssey-ai-native-c2.git
+```
+
 ## 미션 목록
 
 | 미션 | 제목 | 내용 | 주요 파일 |
