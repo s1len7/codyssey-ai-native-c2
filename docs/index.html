@@ -17,15 +17,21 @@
       --muted: #9299a8;
       --accent: #7c9cff;
       --danger: #ff7777;
+      --sidebar-width: 224px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
+      padding-left: var(--sidebar-width);
       background: var(--bg);
       color: var(--text);
       font-family:
@@ -33,9 +39,362 @@
         "Noto Sans KR", sans-serif;
     }
 
+    body.settings-open {
+      overflow: hidden;
+    }
+
     button,
-    input {
+    input,
+    textarea {
       font: inherit;
+    }
+
+    /* 사이드바 */
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      width: var(--sidebar-width);
+      padding: 22px 14px;
+      border-right: 1px solid var(--border);
+      background: #0d0f14;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 8px 24px;
+      color: var(--text);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .sidebar-brand-mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #111827;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 11px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+      transition:
+        background 0.2s,
+        color 0.2s;
+    }
+
+    .sidebar-link:hover {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .sidebar-icon {
+      width: 20px;
+      flex-shrink: 0;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+    }
+
+    .settings-button {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      width: 100%;
+      padding: 11px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition:
+        background 0.2s,
+        border-color 0.2s;
+    }
+
+    .settings-button:hover {
+      border-color: #59647a;
+      background: var(--card-hover);
+    }
+
+    .settings-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      fill: currentColor;
+    }
+
+    /* 설정 화면 */
+    .settings-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, 0.68);
+      backdrop-filter: blur(4px);
+    }
+
+    .settings-overlay[hidden] {
+      display: none;
+    }
+
+    .settings-panel {
+      display: flex;
+      flex-direction: column;
+      width: min(680px, 100%);
+      max-height: min(820px, calc(100vh - 48px));
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--card);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .settings-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .settings-subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .settings-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .settings-close:hover {
+      background: var(--card-hover);
+      color: var(--text);
+    }
+
+    .settings-body {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 4px 22px 24px;
+    }
+
+    .settings-footer {
+      flex-shrink: 0;
+      padding: 14px 22px 18px;
+      border-top: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    .settings-footer .settings-section {
+      padding: 0;
+      border-bottom: 0;
+    }
+
+    .settings-footer .settings-section > p {
+      margin-bottom: 10px;
+    }
+
+    .settings-footer .form-message {
+      margin-bottom: 0;
+    }
+
+    .settings-section {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-section:last-child {
+      border-bottom: 0;
+    }
+
+    .settings-section h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+    }
+
+    .settings-section > p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .settings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #151820;
+    }
+
+    .settings-row-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .settings-row-name {
+      overflow: hidden;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .settings-row-meta {
+      overflow: hidden;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .toggle {
+      position: relative;
+      display: block;
+      flex-shrink: 0;
+      width: 42px;
+      height: 24px;
+    }
+
+    .toggle input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: #3a404d;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle-track::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform 0.2s;
+    }
+
+    .toggle input:checked + .toggle-track {
+      background: var(--accent);
+    }
+
+    .toggle input:checked + .toggle-track::after {
+      transform: translateX(18px);
+    }
+
+    .toggle input:focus-visible + .toggle-track {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .settings-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .danger-button,
+    .secondary-button {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #12151b;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .danger-button {
+      border-color: rgba(255, 119, 119, 0.4);
+      color: var(--danger);
+    }
+
+    .danger-button:hover,
+    .secondary-button:hover {
+      background: var(--card-hover);
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      margin: 0;
+      padding: 18px;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
     }
 
     .container {
@@ -69,6 +428,10 @@
       margin-top: 12px;
       color: #727b8d;
       font-size: 12px;
+    }
+
+    section[id] {
+      scroll-margin-top: 24px;
     }
 
     .section-title {
@@ -338,6 +701,58 @@
       font-size: 12px;
     }
 
+    /* 퀵 메모 */
+    .memo-panel {
+      margin-top: 38px;
+    }
+
+    .memo-box {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+    }
+
+    #memoInput {
+      display: block;
+      width: 100%;
+      min-height: 170px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      resize: vertical;
+      background: #12151b;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    #memoInput:focus {
+      border-color: var(--accent);
+    }
+
+    #memoInput::placeholder {
+      color: #6f7889;
+    }
+
+    .memo-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .memo-actions .form-message {
+      flex: 1;
+      margin-top: 0;
+    }
+
+    .memo-save {
+      min-height: 40px;
+    }
+
     footer {
       margin-top: 45px;
       color: #646c7b;
@@ -402,9 +817,97 @@
       }
     }
 
+    @media (max-width: 900px) {
+      :root {
+        --sidebar-width: 64px;
+      }
+
+      .sidebar {
+        padding: 16px 10px;
+      }
+
+      .sidebar-brand {
+        justify-content: center;
+        padding: 0 0 22px;
+      }
+
+      .sidebar-brand-text,
+      .sidebar-label {
+        display: none;
+      }
+
+      .sidebar-link,
+      .settings-button {
+        justify-content: center;
+        padding: 11px 0;
+      }
+
+      .settings-icon {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
     @media (max-width: 650px) {
+      :root {
+        --sidebar-width: 56px;
+      }
+
       .container {
         padding-top: 45px;
+      }
+
+      .sidebar {
+        padding: 12px 8px;
+      }
+
+      .sidebar-brand {
+        display: none;
+      }
+
+      .sidebar-link {
+        padding: 10px 0;
+      }
+
+      .settings-overlay {
+        padding: 0;
+      }
+
+      .settings-panel {
+        width: 100%;
+        height: 100dvh;
+        max-height: 100dvh;
+        border: 0;
+        border-radius: 0;
+      }
+
+      .settings-header {
+        padding: 18px 16px;
+      }
+
+      .settings-body {
+        padding: 4px 16px 20px;
+      }
+
+      .settings-footer {
+        padding: 12px 16px 16px;
+      }
+
+      .settings-actions {
+        flex-direction: column;
+      }
+
+      .settings-actions button {
+        width: 100%;
+      }
+
+      .memo-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .memo-actions .add-button {
+        width: 100%;
       }
 
       .card-grid {
@@ -465,8 +968,16 @@
     }
 
     @media (max-width: 360px) {
+      :root {
+        --sidebar-width: 52px;
+      }
+
       .container {
         width: calc(100% - 24px);
+      }
+
+      .sidebar {
+        padding: 10px 6px;
       }
 
       .service-card {
@@ -478,11 +989,135 @@
         width: 34px;
         height: 34px;
       }
+
+      #memoInput {
+        min-height: 140px;
+      }
     }
   </style>
 </head>
-
 <body>
+
+  <aside class="sidebar" aria-label="주요 메뉴">
+    <div class="sidebar-brand">
+      <span class="sidebar-brand-mark">C</span>
+      <span class="sidebar-brand-text">Codyssey</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a
+        class="sidebar-link"
+        href="#quickAccess"
+        title="Quick Access"
+        aria-label="Quick Access"
+      >
+        <span class="sidebar-icon" aria-hidden="true">🏠</span>
+        <span class="sidebar-label">Quick Access</span>
+      </a>
+      <a
+        class="sidebar-link"
+        href="#myShortcuts"
+        title="My Shortcuts"
+        aria-label="My Shortcuts"
+      >
+        <span class="sidebar-icon" aria-hidden="true">🔗</span>
+        <span class="sidebar-label">My Shortcuts</span>
+      </a>
+      <a
+        class="sidebar-link"
+        href="#macShortcuts"
+        title="Mac Shortcuts"
+        aria-label="Mac Shortcuts"
+      >
+        <span class="sidebar-icon" aria-hidden="true">⌨️</span>
+        <span class="sidebar-label">Mac Shortcuts</span>
+      </a>
+      <a
+        class="sidebar-link"
+        href="#quickMemo"
+        title="Quick Memo"
+        aria-label="Quick Memo"
+      >
+        <span class="sidebar-icon" aria-hidden="true">📝</span>
+        <span class="sidebar-label">Quick Memo</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button
+        type="button"
+        class="settings-button"
+        id="openSettings"
+        aria-label="설정 열기"
+        title="설정"
+      >
+        <svg class="settings-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+        </svg>
+        <span class="sidebar-label">Settings</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="settings-overlay" id="settingsOverlay" hidden>
+    <div
+      class="settings-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settingsTitle"
+    >
+      <div class="settings-header">
+        <div>
+          <h2 id="settingsTitle">Settings</h2>
+          <p class="settings-subtitle">
+            기본 항목을 켜고 끄거나, 저장된 데이터를 초기화할 수 있습니다.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="settings-close"
+          id="closeSettings"
+          aria-label="설정 닫기"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="settings-body">
+        <section class="settings-section">
+          <h3>기본 퀵링크</h3>
+          <p>끄면 Quick Access에서 숨겨집니다. 다시 켜면 바로 복구됩니다.</p>
+          <div class="settings-list" id="defaultSiteSettings"></div>
+        </section>
+
+        <section class="settings-section">
+          <h3>기본 맥OS 단축키</h3>
+          <p>끄면 Mac Shortcuts 목록에서 숨겨집니다. 다시 켜면 바로 복구됩니다.</p>
+          <div class="settings-list" id="defaultShortcutSettings"></div>
+        </section>
+      </div>
+
+      <div class="settings-footer">
+        <section class="settings-section settings-danger">
+          <h3>데이터 관리</h3>
+          <p>
+            전체 삭제는 모든 기본 항목을 끄고 사용자 항목과 메모를 지웁니다.
+            Factory Setting은 사용자 데이터를 지우고 기본값을 복구합니다.
+          </p>
+          <div class="settings-actions">
+            <button type="button" class="danger-button" id="deleteAllButton">
+              전체 삭제
+            </button>
+            <button type="button" class="secondary-button" id="factoryResetButton">
+              Factory Setting
+            </button>
+          </div>
+          <div class="form-message" id="settingsMessage" aria-live="polite"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
   <main class="container">
 
     <header>
@@ -491,7 +1126,7 @@
       <div class="device-info" id="deviceInfo"></div>
     </header>
 
-    <section>
+    <section id="quickAccess">
       <h2 class="section-title">QUICK ACCESS</h2>
       <div class="card-grid" id="serviceGrid"></div>
 
@@ -513,7 +1148,7 @@
       </div>
     </section>
 
-    <section class="custom-section">
+    <section class="custom-section" id="myShortcuts">
       <h2 class="section-title">MY SHORTCUTS</h2>
 
       <div class="form-panel">
@@ -548,7 +1183,7 @@
       <div class="card-grid" id="customGrid" style="margin-top: 14px;"></div>
     </section>
 
-    <section class="shortcut-panel">
+    <section class="shortcut-panel" id="macShortcuts">
       <h2 class="section-title">MAC SHORTCUTS</h2>
       <p class="shortcut-hint">자주 쓰는 기본 단축키와 내가 추가한 단축키를 함께 볼 수 있습니다. 내가 추가한 항목만 삭제할 수 있습니다.</p>
 
@@ -581,6 +1216,29 @@
         </form>
 
         <div class="form-message" id="shortcutFormMessage" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="memo-panel" id="quickMemo">
+      <h2 class="section-title">QUICK MEMO</h2>
+      <p class="shortcut-hint">
+        자주 쓰는 메모를 적고 저장해 두세요. 브라우저에 저장되어 새로고침해도 유지됩니다.
+      </p>
+
+      <div class="memo-box">
+        <textarea
+          id="memoInput"
+          rows="7"
+          placeholder="메모를 입력하세요..."
+          aria-label="퀵 메모"
+        ></textarea>
+
+        <div class="memo-actions">
+          <div class="form-message" id="memoMessage" aria-live="polite"></div>
+          <button type="button" class="add-button memo-save" id="memoSave">
+            저장
+          </button>
+        </div>
       </div>
     </section>
 
@@ -644,9 +1302,14 @@
 
     const STORAGE_KEY = "codyssey_custom_sites";
     const SHORTCUT_STORAGE_KEY = "codyssey_custom_shortcuts";
+    const SETTINGS_STORAGE_KEY = "codyssey_settings";
+    const MEMO_STORAGE_KEY = "codyssey_quick_memo";
 
     let customSites = [];
     let customShortcuts = [];
+    let hiddenDefaultSites = new Set();
+    let hiddenDefaultShortcuts = new Set();
+    let memoText = "";
     let storageAvailable = true;
 
     // ==========================================
@@ -714,6 +1377,54 @@
           "error"
         );
       }
+
+      try {
+        const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
+
+        if (savedSettings !== null) {
+          const parsed = JSON.parse(savedSettings);
+          const siteNames = new Set(defaultSites.map(site => site.name));
+          const shortcutNames = new Set(
+            defaultShortcuts.map(item => item.name)
+          );
+
+          hiddenDefaultSites = new Set(
+            Array.isArray(parsed.hiddenDefaultSites)
+              ? parsed.hiddenDefaultSites.filter(name => siteNames.has(name))
+              : []
+          );
+
+          hiddenDefaultShortcuts = new Set(
+            Array.isArray(parsed.hiddenDefaultShortcuts)
+              ? parsed.hiddenDefaultShortcuts.filter(name =>
+                  shortcutNames.has(name)
+                )
+              : []
+          );
+        }
+      } catch (error) {
+        hiddenDefaultSites = new Set();
+        hiddenDefaultShortcuts = new Set();
+        storageAvailable = false;
+
+        showSettingsMessage(
+          "저장된 설정을 불러오지 못했습니다. 기본 상태로 시작합니다.",
+          "error"
+        );
+      }
+
+      try {
+        const savedMemo = localStorage.getItem(MEMO_STORAGE_KEY);
+
+        if (savedMemo !== null) {
+          memoText = savedMemo;
+        }
+      } catch (error) {
+        memoText = "";
+        storageAvailable = false;
+
+        showMemoMessage("저장된 메모를 불러오지 못했습니다.", "error");
+      }
     }
 
     function saveSites() {
@@ -746,6 +1457,41 @@
         storageAvailable = false;
 
         showShortcutMessage(
+          "저장소를 사용할 수 없어 이번 세션에서만 유지됩니다.",
+          "error"
+        );
+      }
+    }
+
+    function saveSettings() {
+      try {
+        localStorage.setItem(
+          SETTINGS_STORAGE_KEY,
+          JSON.stringify({
+            hiddenDefaultSites: [...hiddenDefaultSites],
+            hiddenDefaultShortcuts: [...hiddenDefaultShortcuts]
+          })
+        );
+
+        storageAvailable = true;
+      } catch (error) {
+        storageAvailable = false;
+
+        showSettingsMessage(
+          "저장소를 사용할 수 없어 이번 세션에서만 유지됩니다.",
+          "error"
+        );
+      }
+    }
+
+    function saveMemo() {
+      try {
+        localStorage.setItem(MEMO_STORAGE_KEY, memoText);
+        storageAvailable = true;
+      } catch (error) {
+        storageAvailable = false;
+
+        showMemoMessage(
           "저장소를 사용할 수 없어 이번 세션에서만 유지됩니다.",
           "error"
         );
@@ -842,6 +1588,28 @@
       }
     }
 
+    function showSettingsMessage(message, type = "") {
+      const element = document.getElementById("settingsMessage");
+
+      element.textContent = message;
+      element.className = "form-message";
+
+      if (type) {
+        element.classList.add(type);
+      }
+    }
+
+    function showMemoMessage(message, type = "") {
+      const element = document.getElementById("memoMessage");
+
+      element.textContent = message;
+      element.className = "form-message";
+
+      if (type) {
+        element.classList.add(type);
+      }
+    }
+
     // ==========================================
     // 아이콘 생성
     // ==========================================
@@ -880,6 +1648,10 @@
       grid.replaceChildren();
 
       defaultSites.forEach(site => {
+        if (hiddenDefaultSites.has(site.name)) {
+          return;
+        }
+
         const card = document.createElement("a");
 
         card.className = "service-card";
@@ -908,6 +1680,16 @@
 
         grid.appendChild(card);
       });
+
+      if (!grid.querySelector(".service-card")) {
+        const empty = document.createElement("p");
+
+        empty.className = "empty-state";
+        empty.textContent =
+          "표시할 기본 퀵링크가 없습니다. 설정에서 다시 켤 수 있습니다.";
+
+        grid.appendChild(empty);
+      }
     }
 
     // ==========================================
@@ -1317,11 +2099,111 @@
       list.replaceChildren();
 
       defaultShortcuts.forEach(item => {
+        if (hiddenDefaultShortcuts.has(item.name)) {
+          return;
+        }
+
         list.appendChild(renderShortcutItem(item, false));
       });
 
       customShortcuts.forEach(item => {
         list.appendChild(renderShortcutItem(item, true));
+      });
+
+      if (!list.querySelector(".shortcut-item")) {
+        const empty = document.createElement("p");
+
+        empty.className = "empty-state";
+        empty.textContent =
+          "표시할 기본 단축키가 없습니다. 설정에서 다시 켤 수 있습니다.";
+
+        list.appendChild(empty);
+      }
+    }
+
+    function createSettingsRow({ name, meta, checked, onChange }) {
+      const row = document.createElement("div");
+      row.className = "settings-row";
+
+      const info = document.createElement("div");
+      info.className = "settings-row-info";
+
+      const nameElement = document.createElement("div");
+      nameElement.className = "settings-row-name";
+      nameElement.textContent = name;
+
+      const metaElement = document.createElement("div");
+      metaElement.className = "settings-row-meta";
+      metaElement.textContent = meta;
+
+      info.append(nameElement, metaElement);
+
+      const toggle = document.createElement("label");
+      toggle.className = "toggle";
+
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.checked = checked;
+      input.setAttribute("aria-label", `${name} 표시`);
+
+      const track = document.createElement("span");
+      track.className = "toggle-track";
+
+      input.addEventListener("change", () => onChange(input.checked));
+
+      toggle.append(input, track);
+      row.append(info, toggle);
+
+      return row;
+    }
+
+    function renderSettings() {
+      const siteList = document.getElementById("defaultSiteSettings");
+      const shortcutList = document.getElementById(
+        "defaultShortcutSettings"
+      );
+
+      siteList.replaceChildren();
+      shortcutList.replaceChildren();
+
+      defaultSites.forEach(site => {
+        siteList.appendChild(
+          createSettingsRow({
+            name: site.name,
+            meta: site.url,
+            checked: !hiddenDefaultSites.has(site.name),
+            onChange: enabled => {
+              if (enabled) {
+                hiddenDefaultSites.delete(site.name);
+              } else {
+                hiddenDefaultSites.add(site.name);
+              }
+
+              saveSettings();
+              renderDefaultSites();
+            }
+          })
+        );
+      });
+
+      defaultShortcuts.forEach(item => {
+        shortcutList.appendChild(
+          createSettingsRow({
+            name: item.name,
+            meta: item.keys.join(" + "),
+            checked: !hiddenDefaultShortcuts.has(item.name),
+            onChange: enabled => {
+              if (enabled) {
+                hiddenDefaultShortcuts.delete(item.name);
+              } else {
+                hiddenDefaultShortcuts.add(item.name);
+              }
+
+              saveSettings();
+              renderShortcuts();
+            }
+          })
+        );
       });
     }
 
@@ -1408,6 +2290,118 @@
     }
 
     // ==========================================
+    // 설정 화면
+    // ==========================================
+
+    const settingsOverlay = document.getElementById("settingsOverlay");
+    const settingsButton = document.getElementById("openSettings");
+    const settingsCloseButton = document.getElementById("closeSettings");
+
+    function openSettings() {
+      renderSettings();
+      settingsOverlay.hidden = false;
+      document.body.classList.add("settings-open");
+      settingsCloseButton.focus();
+    }
+
+    function closeSettings() {
+      settingsOverlay.hidden = true;
+      document.body.classList.remove("settings-open");
+      settingsButton.focus();
+    }
+
+    settingsButton.addEventListener("click", openSettings);
+    settingsCloseButton.addEventListener("click", closeSettings);
+
+    settingsOverlay.addEventListener("click", event => {
+      if (event.target === settingsOverlay) {
+        closeSettings();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !settingsOverlay.hidden) {
+        closeSettings();
+      }
+    });
+
+    function resetAllData(hideDefaults) {
+      hiddenDefaultSites = hideDefaults
+        ? new Set(defaultSites.map(site => site.name))
+        : new Set();
+
+      hiddenDefaultShortcuts = hideDefaults
+        ? new Set(defaultShortcuts.map(item => item.name))
+        : new Set();
+
+      customSites = [];
+      customShortcuts = [];
+      memoText = "";
+
+      saveSites();
+      saveCustomShortcuts();
+      saveSettings();
+      saveMemo();
+
+      renderDefaultSites();
+      renderCustomSites();
+      renderShortcuts();
+      renderMemo();
+      renderSettings();
+
+      if (storageAvailable) {
+        showMemoMessage("메모가 삭제되었습니다.");
+        showSettingsMessage(
+          hideDefaults
+            ? "모든 항목을 삭제했습니다."
+            : "기본값으로 복구했습니다.",
+          "success"
+        );
+      }
+    }
+
+    document.getElementById("deleteAllButton").addEventListener("click", () => {
+      const confirmed = confirm(
+        "모든 기본/사용자 퀵링크와 단축키를 숨기고, 메모를 삭제하시겠습니까?"
+      );
+
+      if (confirmed) {
+        resetAllData(true);
+      }
+    });
+
+    document
+      .getElementById("factoryResetButton")
+      .addEventListener("click", () => {
+        const confirmed = confirm(
+          "추가한 항목과 메모를 삭제하고 기본값으로 되돌리시겠습니까?"
+        );
+
+        if (confirmed) {
+          resetAllData(false);
+        }
+      });
+
+    // ==========================================
+    // 퀵 메모
+    // ==========================================
+
+    const memoInput = document.getElementById("memoInput");
+
+    function renderMemo() {
+      memoInput.value = memoText;
+    }
+
+    document.getElementById("memoSave").addEventListener("click", () => {
+      memoText = memoInput.value;
+      saveMemo();
+
+      if (storageAvailable) {
+        showMemoMessage("메모가 저장되었습니다.", "success");
+      }
+    });
+
+    // ==========================================
     // 초기 실행
     // ==========================================
 
@@ -1415,6 +2409,7 @@
     renderDefaultSites();
     renderCustomSites();
     renderShortcuts();
+    renderMemo();
 
   </script>
 </body>
