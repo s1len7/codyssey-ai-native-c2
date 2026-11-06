@@ -123,7 +123,7 @@
       height: 44px;
       overflow: hidden;
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.07);
+      background: #ffffff;
     }
 
     .service-icon {
@@ -148,6 +148,13 @@
       margin-top: 5px;
       color: var(--muted);
       font-size: 12px;
+    }
+
+    .service-url {
+      margin-top: 4px;
+      color: #6f7889;
+      font-size: 11px;
+      word-break: break-all;
     }
 
     .custom-card {
@@ -389,6 +396,12 @@
       }
     }
 
+    @media (max-width: 1024px) {
+      .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 650px) {
       .container {
         padding-top: 45px;
@@ -397,6 +410,10 @@
       .card-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
+      }
+
+      #serviceGrid {
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .service-card {
@@ -611,7 +628,7 @@
       },
       {
         name: "Gemini",
-        description: "Google AI",
+        description: "AI Assistant",
         url: "https://gemini.google.com",
         icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzHuef4PDf-oBNT9rr4pceUgA2VS-bmec4U5ozsWe4XQ&s=10",
         fallback: "✨"
@@ -882,7 +899,11 @@
         description.className = "service-description";
         description.textContent = site.description;
 
-        info.append(name, description);
+        const url = document.createElement("div");
+        url.className = "service-url";
+        url.textContent = site.url;
+
+        info.append(name, description, url);
         card.append(icon, info);
 
         grid.appendChild(card);
@@ -920,7 +941,11 @@
         description.className = "service-description";
         description.textContent = new URL(site.url).hostname;
 
-        info.append(name, description);
+        const url = document.createElement("div");
+        url.className = "service-url";
+        url.textContent = site.url;
+
+        info.append(name, description, url);
         card.append(icon, info);
 
         const deleteButton = document.createElement("button");
