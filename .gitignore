@@ -5,3 +5,4 @@ GEMINI.md
 .env.*
 !.env.example
 tmp/
+.kilo/

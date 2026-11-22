@@ -7,9 +7,9 @@
 해야 할 일: iris 데이터로 간단한 머신러닝 시각화 페이지 만들기.
 읽는 사람: 데이터 분석 입문하려는 비개발자. 그래서 쉽게 설명해야 함. 어려운 수식이나 용어 남발 금지.
 내 환경: 맥북, Intel i5 3.1GHz 6코어, 메모리 32GB, macOS 15.7.5. NVIDIA GPU 없음. 너무 무거운 건 안 됨.
-언어: Python 3.12.
+언어: Python 3.12 (별도 가상환경에서 실행)
 데이터: scikit-learn에 들어있는 iris (4개 feature, 3개 species).
-출력: JupyterLab 노트북을 웹페이지로 리뷰 가능하게 만들 것.
+출력: JupyterLab 노트북 파일(.ipynb)을 리뷰할 수 있게 만들 것.
 
 ## 2. 페르소나 (내가 맡을 캐릭터)
 
@@ -23,47 +23,57 @@
 ## 3. 단계별 계획 (각 단계마다 md 파일로 남김)
 
 1단계: 환경 세팅
-- Python 3.12 가상환경 만들기.
+- Python 3.12 전용 가상환경(venv) 만들기. venv 안에서만 실행.
 - .gitignore, .gitkeep 설정 (불필요한 대용량 파일 GitHub에 올리지 않음).
-- 필요한 패키지: scikit-learn, matplotlib, jupyterlab 등.
+- 필요한 패키지: scikit-learn, matplotlib, jupyterlab, pandas, seaborn, tqdm 등.
 - 산출물: 01_환경세팅.md
 
-2단계: AGENTS.md 정리
-- 기존 섹션은 맨 하단에 그대로 두고, 새 섹션들 추가.
-- 산출물: AGENTS.md 자체 수정
-
-3단계: iris 데이터 기본 체크
+2단계: iris 데이터 기본 체크
 - 데이터 로드, shape, 결측치, species 분포 등 확인.
 - 산출물: 03_데이터기본체크.md + 노트북 셀
+- AGENTS.md 수시 업데이트 (진행 상황 반영)
 
-4단계: 2개 feature 조합별 2D 산점도
+3단계: 2개 feature 조합별 2D 산점도
 - 4개 feature 중 2개씩 고른 조합 (6가지).
 - species별 색상, 마커 다르게.
 - 사람이 눈으로 변별력 있는지 확인 용도.
 - 산출물: 04_산점도시각화.md + 노트북
+- AGENTS.md 수시 업데이트
 
-5단계: PCA로 변별력 높은 feature 시각화
+4단계: PCA로 변별력 높은 feature 시각화
 - 4개 feature 중 어느 게 변별력이 높은지 PCA로 시각화.
 - 산출물: 05_PCA시각화.md + 노트북
+- AGENTS.md 수시 업데이트
 
-6단계: JupyterLab -> 웹페이지
-- 노트북을 웹페이지로 변환/리뷰 가능하게.
-- 산출물: 06_웹페이지변환.md
+5단계: JupyterLab 노트북 공유
+- 노트북 파일(.ipynb) 자체를 리뷰 대상으로 공유.
+- 산출물: 06_노트북공유.md
+- AGENTS.md 수시 업데이트
 
-7단계: 3개 AI 모델 비교 (ChatGPT, Claude, Gemini 무료 모델)
+6단계: 3개 AI 모델 비교 (ChatGPT, Claude, Gemini 무료 모델)
 - OpenCLI browser extension으로 접속.
 - 각자 무료 모델로 비교.
 - 산출물: 07_모델비교.md
+- AGENTS.md 수시 업데이트
 
-8단계: REQUIREMENTS.md 9개 요구사항 수행
+7단계: REQUIREMENTS.md 9개 요구사항 수행
 - 대화 로그, 환각 검증, 프롬프트 개선, 미해결 기록 등.
 - 산출물: 08_REQUIREMENTS수행.md
+- AGENTS.md 수시 업데이트
 
-9단계: README.md 작성
+8단계: README.md 작성
 - 산출물 파일 목록 정리.
 - 산출물: README.md
+- AGENTS.md 수시 업데이트
 
-## 4. 산출물 파일 목록 (가안)
+## 4. AGENTS.md 수정 원칙 (지속수행)
+
+- AGENTS.md 정리는 2단계에서 한 번만 하는 게 아님.
+- 각 단계가 끝나거나 계획이 바뀔 때마다 바로 이 파일을 고쳐서 반영함.
+- 기존 섹션(1~3, 5~7 등)은 맨 하단에 그대로 두고, 새 내용은 별도 섹션으로 추가하는 방향으로 수정함.
+- 자연인 사람이 쓴 것처럼, 너무 거창하지 않게.
+
+## 5. 산출물 파일 목록 (가안)
 
 - 01_환경세팅.md
 - 03_데이터기본체크.md
@@ -75,13 +85,14 @@
 - README.md
 - 노트북 파일(.ipynb) 몇 개
 
-## 5. 리스크 / 선보고할 내용
+## 6. 리스크 / 선보고할 내용
 
 iris 데이터는 작아서 무겁지 않을 거라 예상되지만, 만약 조합이 너무 많아지면 선보고함.
 NVIDIA GPU 없으니 GPU 가속 시각화는 못 씀. CPU로 돌아가는 선에서 함.
 OpenCLI browser extension이 잘 안 되면 일단 수동으로라도 비교는 함.
+Python 3.12 가상환경이 안 되면 기존 Python으로 일단 진행하고, 그래도 안 되면 선보고함.
 
-## 6. 일정 (대략)
+## 7. 일정 (대략)
 
 아직 안 정함. 단계별로 하나씩 해나가면서 조정할 예정.
 
@@ -101,7 +112,7 @@ OpenCLI browser extension이 잘 안 되면 일단 수동으로라도 비교는 
 <!--  
 - SVM, Tree기반 알고리즘의 학습과정에서의 hyperplane 변경모습 시각화
 -->
-- output은 jupyterlab으로 작성하여 웹페이지로 리뷰가능하게 만들 것
+- output은 jupyterlab 노트북(.ipynb)으로 리뷰가능하게 만들 것
 
 - ./REQUIREMENTS.md 내용을 따를 것
   - 이때, 3개 AI모델을 비교해야하는데, 무료로 사용가능한 ChatGPT, Claude, Gemini 로 하고 세부모델은 각 서비스별로 사이트 접속당시 사용가능한 무료모델로 정할 것
